@@ -53,7 +53,7 @@ var msg_warning_write_protection="Schreibschutz deaktiviert!\n\nMit Vorsicht for
 
 var msg_cobra_only="VORSICHT!\n\Das funktioniert nur mit aktiviertem COBRA auf CFW!";
 
-var msg_mount_test="** IN TEST PHASE **!\n\Das wird /dev_hdd1/ einbinden\n\nNach dem einbinden kannst du den Browser neustarten und eine Lese/Schreib Datei Kette verwenden um die /dev_hdd1/ partition in ein Ziel auszulesen!";
+var msg_mount_test="** IN TEST PHASE **";
 
 // File Operations
 var msg_default_size="Nutze Standardgröße 0x140";
@@ -88,7 +88,7 @@ var success_chain_exec_idps="<h3><b><font color='#386E38'>IDPS erfolgreich ausge
 var success_chain_exec_syscall_dump="<h3><b><font color='#386E38'>Syscall Rückgabewert erfolgreich ausgelesen!</font></b></h3>";
 var success_chain_exec_memdump="<h3><b><font color='#386E38'>Arbeitsspeicher erfolgreich ausgelesen!</font></b></h3>";
 var success_chain_exec_read_write_file="<h3><b><font color='#386E38'>Quelle erfolgreich ins Ziel übertragen!</font></b></h3>";
-var success_mount_device="<h3><b><font color='#386E38'>/dev_hdd1/ wurde erfolgreich eingebunden! Starte den Browser neu und verwende eine Lese/Schreib Datei Kette zum auslesen.</font></b></h3>";
+var success_mount_device="<h3><b><font color='#386E38'>Successfully Mounted Device!</font></b></h3>";
 
 // Compatibility/Offset Messages
 var ua_msg="<hr><h3>PS3 System Browser Info: "+navigator.userAgent+ "</h3>";
@@ -261,6 +261,11 @@ var gui_txt_option_memdump_presets_default="* Keine Voreinstellungen ausgewählt
 var gui_txt_memdump_address_start="Start:";
 var gui_txt_memdump_address_end="Ende:";
 var gui_txt_btn_memdump_set_values="Neuen Wert festlegen";
+
+var gui_txt_mounting_setup="Mounting Options: ";
+var gui_txt_option_mount_device="Device Name";
+var gui_txt_option_mount_fs="File System";
+var gui_txt_option_mount_path="Mount Path";
 
 var gui_txt_group_user_id="Benutzer ID:";
 var gui_txt_option_user_id_default="* Standard *";

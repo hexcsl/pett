@@ -53,7 +53,7 @@ var msg_warning_write_protection="Protecció d'escriptura desactivada!\n\n¡¡¡
 
 var msg_cobra_only="¡ALERTA!\n\n¡Això NOMÉS funciona en CFW amb COBRA activat!";
 
-var msg_mount_test="¡** EN FASE DE PROVA **!\n\nAixò muntarà / dev_hdd1 /\n\n¡Un cop muntada, pots reiniciar el navegador i utilitzar la cadena L / E arxiu per bolcar des de la partició / dev_hdd1 / a una destinació!";
+var msg_mount_test="¡** EN FASE DE PROVA **";
 
 // File Operations
 var msg_default_size="Usant mida per defecte 0x140";
@@ -88,7 +88,7 @@ var success_chain_exec_idps="<h3><b><font color='#386E38'>¡IDPs bolcat amb èxi
 var success_chain_exec_syscall_dump="<h3><b><font color='#386E38'>Syscall Return Value Dumped Successfully!</font></b></h3>";
 var success_chain_exec_memdump="<h3><b><font color='#386E38'>¡Memòria bolcada amb èxit!</font></b></h3>";
 var success_chain_exec_read_write_file="<h3><b><font color='#386E38'>¡Tranferido origen a destinació amb èxit!</font></b></h3>";
-var success_mount_device="<h3><b><font color='#386E38'>¡Muntat /dev_hdd1/ amb èxit! Reinicieu el navegador i inicia la cadena L / E per bolcar.</font></b></h3>";
+var success_mount_device="<h3><b><font color='#386E38'>Successfully Mounted Device!</font></b></h3>";
 
 // Compatibility/Offset Messages
 var ua_msg="<hr><h3>Informació de navegador de sistema PS3: "+navigator.userAgent+ "</h3>";
@@ -261,6 +261,11 @@ var gui_txt_option_memdump_presets_default="* Sense selecció per omissió *";
 var gui_txt_memdump_address_start="començar:";
 var gui_txt_memdump_address_end="acabar:";
 var gui_txt_btn_memdump_set_values="Posar Nous valors";
+
+var gui_txt_mounting_setup="Mounting Options: ";
+var gui_txt_option_mount_device="Device Name";
+var gui_txt_option_mount_fs="File System";
+var gui_txt_option_mount_path="Mount Path";
 
 var gui_txt_group_user_id="ID d'usuari:";
 var gui_txt_option_user_id_default="* defecte *";

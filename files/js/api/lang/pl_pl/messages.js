@@ -53,7 +53,7 @@ var msg_warning_write_protection="Ochrona Przed Zapisem WYŁĄCZONA!\n\nUważaj 
 
 var msg_cobra_only="OSTRZEŻENIE!\n\nTo Działa Tylko i WYŁĄCZNIE na CFW z Włączoną COBRA!";
 
-var msg_mount_test="** W FAZIE TESTÓW **!\n\nTo zamontuje /dev_hdd1/\n\nkiedy zamontowane, możesz zresetować przeglądarkę i użyć Testu Odczytu/Zapisu Plików aby zrzucić pliki z partycji /dev_hdd1/ do folderu docelowego!";
+var msg_mount_test="** W FAZIE TESTÓW **";
 
 // File Operations
 var msg_default_size="Używam Domyślnego Rozmiaru Pliku 0x140";
@@ -88,7 +88,7 @@ var success_chain_exec_idps="<h3><b><font color='#386E38'>Zrzut IDPS Powiódł S
 var success_chain_exec_syscall_dump="<h3><b><font color='#386E38'>Syscall Return Value Dumped Successfully!</font></b></h3>";
 var success_chain_exec_memdump="<h3><b><font color='#386E38'>Zrzut Pamięci Powiódł Się!!</font></b></h3>";
 var success_chain_exec_read_write_file="<h3><b><font color='#386E38'>Udało Się Zrzucić Plik/Folder Źródłowy Do Folderu Docelowego!</font></b></h3>";
-var success_mount_device="<h3><b><font color='#386E38'>Udało Się Zamontować /dev_hdd1/! Zresetuj Przeglądarkę i Wybierz Test Odczytu/Zapisu aby Zrzucić Pliki.</font></b></h3>";
+var success_mount_device="<h3><b><font color='#386E38'>Successfully Mounted Device!</font></b></h3>";
 
 // Compatibility/Offset Messages
 var ua_msg="<hr><h3>Informacje o Przeglądarce Systemu PS3: "+navigator.userAgent+ "</h3>";
@@ -261,6 +261,11 @@ var gui_txt_option_memdump_presets_default="* Nie Wybrano Ustawienia *";
 var gui_txt_memdump_address_start="początek:";
 var gui_txt_memdump_address_end="Koniec:";
 var gui_txt_btn_memdump_set_values="Ustaw Nowe Wartości";
+
+var gui_txt_mounting_setup="Mounting Options: ";
+var gui_txt_option_mount_device="Device Name";
+var gui_txt_option_mount_fs="File System";
+var gui_txt_option_mount_path="Mount Path";
 
 var gui_txt_group_user_id="ID Użytkownika:";
 var gui_txt_option_user_id_default="* Domyślne *";

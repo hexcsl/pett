@@ -53,7 +53,7 @@ var msg_warning_write_protection="Защита от записи отключе�
 
 var msg_cobra_only="ВНИМАНИЕ!\n\nЭто работает ТОЛЬКО с включённой COBRA на CFW!";
 
-var msg_mount_test="** В ФАЗЕ ТЕСТИРОВАНИЯ **!\n\nЭто будет смонтировано в /dev_hdd1/\n\nПосле монтирования вы можете перезапустить браузер и использовать цепочку 'Чтение/Запись файла' для дампа из раздела /dev_hdd1/ в пункт назначения!";
+var msg_mount_test="** В ФАЗЕ ТЕСТИРОВАНИЯ **";
 
 // File Operations
 var msg_default_size="Используется размер по умолчанию 0x140";
@@ -88,7 +88,7 @@ var success_chain_exec_idps="<h3><b><font color='#386E38'>IDPS сдамплен 
 var success_chain_exec_syscall_dump="<h3><b><font color='#386E38'>Syscall Return Value Dumped Successfully!</font></b></h3>";
 var success_chain_exec_memdump="<h3><b><font color='#386E38'>Память сдамплена успешно!</font></b></h3>";
 var success_chain_exec_read_write_file="<h3><b><font color='#386E38'>Успешно передан источник в пункт назначения!</font></b></h3>";
-var success_mount_device="<h3><b><font color='#386E38'>Успешно смонтрирован /dev_hdd1/! Перезапустите браузер и запустите 'R/W File Chain' для дампа.</font></b></h3>";
+var success_mount_device="<h3><b><font color='#386E38'>Successfully Mounted Device!</font></b></h3>";
 
 // Compatibility/Offset Messages
 var ua_msg="<hr><h3>Информация о браузере системы PS3: "+navigator.userAgent+ "</h3>";
@@ -261,6 +261,11 @@ var gui_txt_option_memdump_presets_default="* Не выбраны пресеты
 var gui_txt_memdump_address_start="Начало:";
 var gui_txt_memdump_address_end="Конец:";
 var gui_txt_btn_memdump_set_values="Применить";
+
+var gui_txt_mounting_setup="Mounting Options: ";
+var gui_txt_option_mount_device="Device Name";
+var gui_txt_option_mount_fs="File System";
+var gui_txt_option_mount_path="Mount Path";
 
 var gui_txt_group_user_id="ID пользователя:";
 var gui_txt_option_user_id_default="* По умолчанию *";

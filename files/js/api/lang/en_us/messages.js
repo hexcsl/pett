@@ -5,7 +5,7 @@
 
 
 // After complete translate the language file update it to latest revision (same as en_us)
-var current_minimum_lang_revision="0004";
+var current_minimum_lang_revision="0007";
 var gui_incomplete_lang="Current translation is incomplete, consider updating or just skip it";
 
 var msg_select_vsh_type="Use CEX?\n\nSelecting NO will use DEX offsets";
@@ -53,7 +53,7 @@ var msg_warning_write_protection="Write Protection Disabled!\n\nProceed With CAU
 
 var msg_cobra_only="ALERT!\n\nThis ONLY Works With COBRA Enabled On CFW!";
 
-var msg_mount_test="** IN TESTING PHASE **!\n\nThis will mount /dev_hdd1/\n\nOnce mounted, you can restart browser and use R/W File chain to dump from /dev_hdd1/ partition to a destination!";
+var msg_mount_test="** IN TESTING PHASE **";
 
 // File Operations
 var msg_default_size="Using Default Size 0x140";
@@ -88,7 +88,7 @@ var success_chain_exec_idps="<h3><b><font color='#386E38'>IDPS Dumped Successful
 var success_chain_exec_syscall_dump="<h3><b><font color='#386E38'>Syscall Return Value Dumped Successfully!</font></b></h3>";
 var success_chain_exec_memdump="<h3><b><font color='#386E38'>Memory Dumped Successfully!</font></b></h3>";
 var success_chain_exec_read_write_file="<h3><b><font color='#386E38'>Successfully Transferred Source To Destination!</font></b></h3>";
-var success_mount_device="<h3><b><font color='#386E38'>Successfully Mounted /dev_hdd1/! Restart Browser and Run R/W File Chain To Dump.</font></b></h3>";
+var success_mount_device="<h3><b><font color='#386E38'>Successfully Mounted Device!</font></b></h3>";
 
 // Compatibility/Offset Messages
 var ua_msg="<hr><h3>PS3 System Browser Info: "+navigator.userAgent+ "</h3>";
@@ -261,6 +261,11 @@ var gui_txt_option_memdump_presets_default="* No Preset Selected *";
 var gui_txt_memdump_address_start="Start:";
 var gui_txt_memdump_address_end="End:";
 var gui_txt_btn_memdump_set_values="Set New Values";
+
+var gui_txt_mounting_setup="Mounting Options: ";
+var gui_txt_option_mount_device="Device Name";
+var gui_txt_option_mount_fs="File System";
+var gui_txt_option_mount_path="Mount Path";
 
 var gui_txt_group_user_id="User ID:";
 var gui_txt_option_user_id_default="* Default *";

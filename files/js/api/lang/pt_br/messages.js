@@ -53,7 +53,7 @@ var msg_warning_write_protection="A proteção contra escrita foi desativada!\n\
 
 var msg_cobra_only="ALERTA!\n\nIsto só FUNCIONA com o COBRA ativado na CFW!";
 
-var msg_mount_test="** EM FASE DE TESTE **!\n\nIsto irá montar a partição /dev_hdd1/\n\nAssim que montado você poderá reiniciar o navegador e utilizar a cadeia de Leitura/Escrita de Arquivos para fazer o dump da partição /dev_hdd1/ para o destino!";
+var msg_mount_test="** EM FASE DE TESTE **";
 
 // File Operations
 var msg_default_size="Usando o tamanho padrão 0x140";
@@ -88,7 +88,7 @@ var success_chain_exec_idps="<h3><b><font color='#386E38'>IDPS Dump feito com su
 var success_chain_exec_syscall_dump="<h3><b><font color='#386E38'>Valor retornado do Syscall Dump feito com sucesso!</font></b></h3>";
 var success_chain_exec_memdump="<h3><b><font color='#386E38'>Dump da Memória feito com sucesso!</font></b></h3>";
 var success_chain_exec_read_write_file="<h3><b><font color='#386E38'>Transferido da Origem para o Destino com sucesso!</font></b></h3>";
-var success_mount_device="<h3><b><font color='#386E38'>Partição /dev_hdd1/ montada com sucesso! Reinicie o navegador e utilize a cadeia de Leitura/Escrita de Arquivos para usar o dump.</font></b></h3>";
+var success_mount_device="<h3><b><font color='#386E38'>Successfully Mounted Device!</font></b></h3>";
 
 // Compatibility/Offset Messages
 var ua_msg="<hr><h3>Informações do Navegador do Sistema PS3: "+navigator.userAgent+ "</h3>";
@@ -261,6 +261,11 @@ var gui_txt_option_memdump_presets_default="* Nenhuma predifinição selecionada
 var gui_txt_memdump_address_start="Início:";
 var gui_txt_memdump_address_end="Fim:";
 var gui_txt_btn_memdump_set_values="Definir novos valores";
+
+var gui_txt_mounting_setup="Mounting Options: ";
+var gui_txt_option_mount_device="Device Name";
+var gui_txt_option_mount_fs="File System";
+var gui_txt_option_mount_path="Mount Path";
 
 var gui_txt_group_user_id="ID do Usuário:";
 var gui_txt_option_user_id_default="* Padrão *";

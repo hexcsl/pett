@@ -53,7 +53,7 @@ var msg_warning_write_protection="Protezione Scrittura Disabilitata!\n\nProcedi 
 
 var msg_cobra_only="ATTENZIONE!\n\nFunziona SOLO con COBRA abilitato su CFW!";
 
-var msg_mount_test="** IN FASE DI TEST ** !\n\n/dev_hdd1/ verra' montato \n\nUna volta montato puoi riaprire il browser e usare la R/W File Chain per fare il DUMP dalla partizione /dev_hdd1/ alla destinazione";
+var msg_mount_test="** IN FASE DI TEST **";
 
 // File Operations
 var msg_default_size="Usando dimensione predefinita 0x140";
@@ -88,7 +88,7 @@ var success_chain_exec_idps="<h3><b><font color='#386E38'>IDPS Dump eseguito!</f
 var success_chain_exec_syscall_dump="<h3><b><font color='#386E38'>Syscall Return Value Dumped Successfully!</font></b></h3>";
 var success_chain_exec_memdump="<h3><b><font color='#386E38'>Dump memoria eseguito!</font></b></h3>";
 var success_chain_exec_read_write_file="<h3><b><font color='#386E38'>Trasferimento sorgente-destinazione completato!</font></b></h3>";
-var success_mount_device="<h3><b><font color='#386E38'>/dev_hdd1 montato con successo! Riapri il Browser ed esegui la R/W File Chain per il DUMP</font></b></h3>";
+var success_mount_device="<h3><b><font color='#386E38'>Successfully Mounted Device!</font></b></h3>";
 
 // Compatibility/Offset Messages
 var ua_msg="<hr><h3>PS3 System Browser Info: "+navigator.userAgent+ "</h3>";
@@ -261,6 +261,11 @@ var gui_txt_option_memdump_presets_default="* No Preset Selected *";
 var gui_txt_memdump_address_start="Start:";
 var gui_txt_memdump_address_end="End:";
 var gui_txt_btn_memdump_set_values="Set New Values";
+
+var gui_txt_mounting_setup="Mounting Options: ";
+var gui_txt_option_mount_device="Device Name";
+var gui_txt_option_mount_fs="File System";
+var gui_txt_option_mount_path="Mount Path";
 
 var gui_txt_group_user_id="User ID:";
 var gui_txt_option_user_id_default="* Default *";

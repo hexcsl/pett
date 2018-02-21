@@ -53,7 +53,7 @@ var msg_warning_write_protection="Protección de escritura desactivada!\n\n¡¡�
 
 var msg_cobra_only="¡ALERTA!\n\n¡Esto SOLO funciona en CFW con COBRA activado!";
 
-var msg_mount_test="¡** EN FASE DE PRUEBA **!\n\nEsto montará /dev_hdd1/\n\n¡Una vez montada, puedes reiniciar el navegador y usar la cadena L/E archivo para volcar desde la partición /dev_hdd1/ a un destino!";
+var msg_mount_test="¡** EN FASE DE PRUEBA **";
 
 // File Operations
 var msg_default_size="Usando tamaño por defecto 0x140";
@@ -88,7 +88,7 @@ var success_chain_exec_idps="<h3><b><font color='#386E38'>¡IDPS volcado con éx
 var success_chain_exec_syscall_dump="<h3><b><font color='#386E38'>Syscall Return Value Dumped Successfully!</font></b></h3>";
 var success_chain_exec_memdump="<h3><b><font color='#386E38'>¡Memoria volcada con éxito!</font></b></h3>";
 var success_chain_exec_read_write_file="<h3><b><font color='#386E38'>¡Tranferido origen a destino con éxito!</font></b></h3>";
-var success_mount_device="<h3><b><font color='#386E38'>¡Montado /dev_hdd1/ con éxito! Reinicia el navegador e inicia la cadena L/E para volcar.</font></b></h3>";
+var success_mount_device="<h3><b><font color='#386E38'>Successfully Mounted Device!</font></b></h3>";
 
 // Compatibility/Offset Messages
 var ua_msg="<hr><h3>Info de navegador de el sistema PS3: "+navigator.userAgent+ "</h3>";
@@ -261,6 +261,11 @@ var gui_txt_option_memdump_presets_default="* Sin selección predefinida *";
 var gui_txt_memdump_address_start="Empezar:";
 var gui_txt_memdump_address_end="Terminar:";
 var gui_txt_btn_memdump_set_values="Colocar nuevos valores";
+
+var gui_txt_mounting_setup="Mounting Options: ";
+var gui_txt_option_mount_device="Device Name";
+var gui_txt_option_mount_fs="File System";
+var gui_txt_option_mount_path="Mount Path";
 
 var gui_txt_group_user_id="ID de Usuario:";
 var gui_txt_option_user_id_default="* Defecto *";

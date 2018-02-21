@@ -53,7 +53,7 @@ var msg_warning_write_protection="Schrijfbeveiliging uitgeschakeld!\n\nVolg met 
 
 var msg_cobra_only="ATTENTIE!\n\nDit werkt ALLEEN met COBRA ingeschakeld op CFW!";
 
-var msg_mount_test="** IN TESTFASE **!\n\nDit zal worden gemount /dev_hdd1/\n\nZodra u bent aangekoppeld, kunt u de browser opnieuw starten en de R/W-bestandsketen gebruiken om van /dev_hdd1/ partition naar een bestemming te dumpen!";
+var msg_mount_test="** IN TESTFASE **";
 
 // File Operations
 var msg_default_size="Standaardgrootte 0x140 gebruiken";
@@ -88,7 +88,7 @@ var success_chain_exec_idps="<h3><b><font color='#386E38'>IDPS met succes gedump
 var success_chain_exec_syscall_dump="<h3><b><font color='#386E38'>Syscall Return Value Dumped Successfully!</font></b></h3>";
 var success_chain_exec_memdump="<h3><b><font color='#386E38'>Geheugen gedumpt met succes!</font></b></h3>";
 var success_chain_exec_read_write_file="<h3><b><font color='#386E38'>bron naar bestemming geslaagd!</font></b></h3>";
-var success_mount_device="<h3><b><font color='#386E38'>succesvol gemonteerd /dev_hdd1/! Start de browser opnieuw en voer de R/W-bestandsketen uit om te dumpen.</font></b></h3>";
+var success_mount_device="<h3><b><font color='#386E38'>Successfully Mounted Device!</font></b></h3>";
 
 // Compatibility/Offset Messages
 var ua_msg="<hr><h3>PS3-systeembrowserinfo: "+navigator.userAgent+ "</h3>";
@@ -261,6 +261,11 @@ var gui_txt_option_memdump_presets_default="* Geen preset geselecteerd *";
 var gui_txt_memdump_address_start="Start:";
 var gui_txt_memdump_address_end="Eind:";
 var gui_txt_btn_memdump_set_values="Zet Nieuwe waardens";
+
+var gui_txt_mounting_setup="Mounting Options: ";
+var gui_txt_option_mount_device="Device Name";
+var gui_txt_option_mount_fs="File System";
+var gui_txt_option_mount_path="Mount Path";
 
 var gui_txt_group_user_id="Gebruiker ID:";
 var gui_txt_option_user_id_default="* Standaard *";

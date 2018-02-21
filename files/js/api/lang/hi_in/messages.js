@@ -52,7 +52,7 @@ var msg_warning_write_protection="विकलांग लेखन सुर�
 
 var msg_cobra_only="चेतावनी!\n\nयह केवल साथ काम करता है COBRA में सक्रिय CFW!";
 
-var msg_mount_test="** टेस्ट चरण में **!\n\nयह माउंट होगा /dev_hdd1/\n\nजब राइडिंग, आप नेविगेटर को पुनः आरंभ कर सकते हैं और लेक्ट / Esc के लिए चेन का उपयोग कर सकते हैं। विभाजन डंप बनाने के लिए फ़ाइलों की /dev_hdd1/ गंतव्य के लिए!";
+var msg_mount_test="** टेस्ट चरण में **";
 
 // File Operations
 var msg_default_size="डिफ़ॉल्ट वजन का उपयोग करना. 0x140";
@@ -87,7 +87,7 @@ var success_chain_exec_idps="<h3><b><font color='#386E38'>IDPS Dump सफल!</
 var success_chain_exec_syscall_dump="<h3><b><font color='#386E38'>Syscall Return Value Dumped Successfully!</font></b></h3>";
 var success_chain_exec_memdump="<h3><b><font color='#386E38'>DUMP सफल मेमोरी का!</font></b></h3>";
 var success_chain_exec_read_write_file="<h3><b><font color='#386E38'>सफल फ़ाइल स्थानांतरण !</font></b></h3>";
-var success_mount_device="<h3><b><font color='#386E38'>विभाजन /dev_hdd1/ सफलतापूर्वक घुड़सवार! ब्राउज़र को पुनरारंभ करें और चेन को चलाएं पढ़ना./लेखन. फ़ाइलों का.</font></b></h3>";
+var success_mount_device="<h3><b><font color='#386E38'>Successfully Mounted Device!</font></b></h3>";
 
 // Compatibility/Offset Messages
 var ua_msg="<hr><h3>Info Navegador PS3: "+navigator.userAgent+ "</h3>";
@@ -260,6 +260,11 @@ var gui_txt_option_memdump_presets_default="* बिना Preset चुना �
 var gui_txt_memdump_address_start="दीक्षा:";
 var gui_txt_memdump_address_end="अंत:";
 var gui_txt_btn_memdump_set_values="Fijar Nuevos Valores";
+
+var gui_txt_mounting_setup="Mounting Options: ";
+var gui_txt_option_mount_device="Device Name";
+var gui_txt_option_mount_fs="File System";
+var gui_txt_option_mount_path="Mount Path";
 
 var gui_txt_group_user_id="ID उपयोगकर्ता:";
 var gui_txt_option_user_id_default="* पूर्व निर्धारित *";

@@ -53,7 +53,7 @@ var msg_warning_write_protection="Yazma Koruması Devre dışı!\n\n Dikkatle il
 
 var msg_cobra_only="ALARIM!\n\nSADECE COBRA'yla Çalışır CFW'de Etkindir!";
 
-var msg_mount_test="** Daha Fazla TEST **!\n\nThis will mount /dev_hdd1/\n\nOnce mounted, you can restart browser and use R/W File chain to dump from /dev_hdd1/ partition to a destination!";
+var msg_mount_test="** Daha Fazla TEST **";
 
 // File Operations
 var msg_default_size="Varsayılanı Kullanma Size 0x140";
@@ -88,7 +88,7 @@ var success_chain_exec_idps="<h3><b><font color='#386E38'>IDPS Dumped Tamamland�
 var success_chain_exec_syscall_dump="<h3><b><font color='#386E38'>Syscall Return Value Dumped Tamamlandı!</font></b></h3>";
 var success_chain_exec_memdump="<h3><b><font color='#386E38'>Memory Dumped Tamamlandı!</font></b></h3>";
 var success_chain_exec_read_write_file="<h3><b><font color='#386E38'>Tamamlandı Transferred Source To Destination!</font></b></h3>";
-var success_mount_device="<h3><b><font color='#386E38'>Tamamlandı Mounted /dev_hdd1/! Restart Browser and Run R/W File Chain To Dump.</font></b></h3>";
+var success_mount_device="<h3><b><font color='#386E38'>Successfully Mounted Device!</font></b></h3>";
 
 // Compatibility/Offset Messages
 var ua_msg="<hr><h3>PS3 Sistem Tarayıcı Bilgisi: "+navigator.userAgent+ "</h3>";
@@ -307,6 +307,11 @@ var gui_txt_option_memdump_presets_default="* Hazır Ayarlar Seçilmedi *";
 var gui_txt_memdump_address_start="Başlat:";
 var gui_txt_memdump_address_end="Bitti:";
 var gui_txt_btn_memdump_set_values="Yeni Değerleri Ayarla";
+
+var gui_txt_mounting_setup="Mounting Options: ";
+var gui_txt_option_mount_device="Device Name";
+var gui_txt_option_mount_fs="File System";
+var gui_txt_option_mount_path="Mount Path";
 
 var gui_txt_group_user_id="Kullanıcı ID:";
 var gui_txt_option_user_id_default="* Varsayılan *";

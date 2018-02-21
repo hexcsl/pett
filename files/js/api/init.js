@@ -100,9 +100,9 @@ var search_max_threshold_backup = 70*0x100000;
 var search_base_offset = 0x80200000;
 var search_base_offset_min = 0x80200000;
 var search_base_offset_max = search_base_offset_min+0x230000;
-var search_base_offset_adjust=0x160000;
-var search_base_offset_adjust_jump2=0x20000;
-var search_base_offset_adjust_jump1=0x30000;
+var search_base_offset_adjust=0x200000;
+var search_base_offset_adjust_jump2=0x100000;
+var search_base_offset_adjust_jump1=0x100000;
 var search_range_size = 0x200000;
 
 // store found offsets
@@ -149,6 +149,7 @@ var j2_found=false;
 var j1_found=false;
 var base_verified=false;
 var stk_verified=false;
+var stk_verified_fake=true;
 var j2_verified=false;
 var j1_verified=false;
 var allOffsetsFound=false;
@@ -193,6 +194,7 @@ var colortext="#EB6C03";
 var colorActive="#279947";
 var colorSuccess="#FFFFFF";
 var colorVerified="#EB6C03";
+var colorVerifiedFake="#5B6C03";
 var base_fp_color=color;
 var stack_frame_color=color;
 var jump_2_color=color;
@@ -370,6 +372,10 @@ var path_type;
 var path_src;
 var path_dest;
 var title_id="PS3XPLOIT";
+
+var mount_device="CELL_FS_IOS:BUILTIN_FLSH1";
+var mount_fs="CELL_FS_FAT";
+var mount_path="/dev_blind";
 
 var db_rebuild_bytes=0x000003E9;
 var memdump_addr=0x80000000;

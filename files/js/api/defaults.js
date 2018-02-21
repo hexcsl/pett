@@ -224,13 +224,6 @@ function setDefaultSearchParams()
 		case 2:
 		search_max_threshold = 70*0x100000;
 		search_max_threshold_backup = 70*0x100000;
-		// search_base_offset = 0x801B0000;
-		// search_base_offset_min = 0x801B0000;
-		// search_base_offset_max = search_base_offset_min+0x230000;
-		// search_base_offset_adjust=0xB0000;
-		// search_base_offset_adjust_jump2=0x10000;
-		// search_base_offset_adjust_jump1=0x8000;
-		// search_range_size = 0x200000;
 		search_base_offset = 0x80200000;
 		search_base_offset_min = 0x80200000;
 		search_base_offset_max = search_base_offset_min+0x230000;
@@ -364,7 +357,7 @@ function setCustomPointerValues()
 	if((chain_stackframe==="file_read_write_test")&&(useAutoSize)){hdd_fd=g_set_r3_from_r29;}
 	
 	// Set mount params
-	if(chain_stackframe==="sys_fs_mount"){path_fp="CELL_FS_UTILITY:HDD1";path_fp2=" CELL_FS_SIMPLEFS";path_src_fp=" /dev_hdd1";}
+	if(chain_stackframe==="sys_fs_mount"){path_fp=mount_device;path_fp2=mount_fs;path_src_fp=mount_path;}
 }
 
 function setPointerOffsets()
@@ -388,6 +381,8 @@ function setPointerOffsets()
 	path_fp2_addr=path_fp_addr+path_fp.length;
 	
 	path_src_fp_addr=path_fp2_addr+path_fp2.length+0x2;
+	path_dest_fp_addr=path_src_fp_addr+path_src_fp.length+0x2;
+	
 	
 	if(str2u_adjusted)
 	{
@@ -397,8 +392,11 @@ function setPointerOffsets()
 	{
 		path_dest_fp_addr=path_src_fp_addr+path_src_fp.length+0x2;
 	}
+	
 		
 	// Super Hacky Way to fix mount for now :)
+	//if(chain_stackframe==="sys_fs_mount"){path_fp_addr=path_fp_addr-0x2;}
+	//if(chain_stackframe==="sys_fs_mount"){path_fp_addr=path_fp_addr-0x2;path_fp2_addr=path_fp2_addr+0x1;}
 	if(chain_stackframe==="sys_fs_mount"){path_fp_addr=path_fp_addr-0x2;path_fp2_addr=path_fp2_addr+0x1;path_src_fp_addr=path_src_fp_addr+0x2;}
 }
 
@@ -589,13 +587,22 @@ function showFoundOffsets(search)
 	if(jump_2_addr!=0){jump_2_acolor=colorSuccess;}
 	if(jump_1_addr!=0){jump_1_acolor=colorSuccess;}
 	
-	if(allOffsetsFound)
+	/*
+	if(allOffsetsVerified)
 	{
 		base_fp_acolor=colorVerified;
 		stack_frame_acolor=colorVerified;
 		jump_2_acolor=colorVerified;
 		jump_1_acolor=colorVerified;
 	}
+	else
+	{
+		base_fp_acolor=colorSuccess;
+		stack_frame_acolor=colorSuccess;
+		jump_2_acolor=colorSuccess;
+		jump_1_acolor=colorSuccess;
+	}
+	*/
 	
 	showFoundOffsetsMsg();
 }
@@ -642,6 +649,10 @@ function toggleDisableButtons(state)
 	disableElement("marked_hex_system_led_action", state);
 	//disableElement("marked_hex_system_fan_speed", state);
 	//disableElement("marked_hex_system_fan_settings", state);
+	
+	disableElement("mounting_device", state);
+	disableElement("mounting_fs", state);
+	disableElement("mounting_path", state);
 	
 	disableElement("marked_reboot", state);
 	disableElement("default_settings", state);
@@ -786,7 +797,7 @@ function syscallTwoAndExit(r3a,r4a,r5a,r6a,r7a,r8a,r9a,r10a,r11a,r30a,r31a,r3b,r
 	a1_r9=r9a;
 	a1_r10=r10a;
 	a1_r11=r11a;
-	a1_r29=r29a;
+	a1_r29=r3a;
 	a1_r30=r30a;
 	a1_r31=r31a;
 	a1_jumpto=g_set_r4_thru_r11;
@@ -801,7 +812,7 @@ function syscallTwoAndExit(r3a,r4a,r5a,r6a,r7a,r8a,r9a,r10a,r11a,r30a,r31a,r3b,r
 	a4_r9=r9b;
 	a4_r10=r10b;
 	a4_r11=r11b;
-	a4_r29=r29b;
+	a4_r29=r3b;
 	a4_r30=r30b;
 	a4_r31=r31b;
 	a4_jumpto=g_set_r4_thru_r11;
@@ -1036,6 +1047,67 @@ function syscallReadWriteFileAuto(src,dest)
 	//a33_jumpto=g_exit_chain;
 }
 
+function syscallReadWriteDirectory(src,dest)
+{
+	// Open Source Directory
+	a1_r3=src;
+	a1_r4=sc_opendir_fd;
+	a1_r11=sys_fs_opendir;
+	a1_r29=src;
+	a1_jumpto=g_set_r4_thru_r11;
+	a2_jumpto=g_set_r3_from_r29;
+	a3_jumpto=g_sc_A0;
+	
+	// Create Target Directory
+	a4_r3=dest;
+	a4_r4=sc_fs_mode;
+	a4_r11=sc_sys_fs_mkdir;
+	a4_r29=dest;
+	a4_jumpto=g_set_r4_thru_r11;
+	a5_jumpto=g_set_r3_from_r29;
+	a6_jumpto=g_sc_A0;
+	
+	// Read Source Directory From File Descriptor
+	a7_r3=sc_opendir_fd;
+	a7_r4=sc_readdir_path;
+	a7_r5=sc_readdir_nread;
+	a7_r9=sc_opendir_fd;
+	a7_r11=sys_fs_readdir;
+	a7_r29=sc_opendir_fd;
+	a7_jumpto=g_set_r4_thru_r11;
+	a8_jumpto=g_set_r3_from_r29;
+	a9_jumpto=g_sc_set_r3_from_r9;
+	
+	a10_r3=sc_opendir_fd;
+	a10_r8=write_buf;// register is r4
+	a10_r10=0;// register is r5
+	extra2=write_nwrite;// register is r6
+	a10_r6=sc_opendir_fd;// register is r9
+	extra5=g_set_r4_thru_r11;
+	extra1=g_set_r3_from_r29;
+	extra3=g_sc_set_r3_from_r9;
+	
+	extra4=sc_sys_fs_write;// register is r11
+	a13_r30=g_set_r31_F8;// must change r31 to not get base_fp overwritten
+	a15_r10=usb_fp_addr;
+	a15_r11=sc_sys_fs_close;
+	a16_jumpto=g_set_r4_thru_r11;
+	a15_jumpto=g_sc_set_r3_from_r10;// using gadget 15 spot in chain
+	a17_jumpto=g_set_r4_thru_r11;
+	a18_jumpto=g_sc_A0
+	a19_jumpto=g_set_r31_108;
+	a20_r10=sc_sys_fs_close;// register is r11
+	a21_r10=hdd_fp_addr;
+	a20_jumpto=g_set_r4_thru_r11;
+	a22_jumpto=g_sc_set_r3_from_r10;
+	
+	a21_jumpto=g_set_r4_thru_r11;
+	a23_jumpto=g_set_r4_thru_r11;
+	a24_r11=restore_stack;
+	a24_jumpto=g_exit_chain;
+	a25_r11=restore_stack;
+}
+
 function exportStdcOpenReadCloseDir(src)
 {
 	a1_r3=src;
@@ -1052,7 +1124,7 @@ function exportStdcOpenReadCloseDir(src)
 	a1_r31=31;
 	a1_jumpto=g_set_r4_thru_r11;
 	a2_jumpto=g_set_r3_from_r29;
-	a3_jumpto=g_sc_A0;
+	a3_jumpto=g_stdc_opendir;
 	a4_r3=3;
 	a4_r4=4;
 	a4_r5=5;
@@ -1066,9 +1138,9 @@ function exportStdcOpenReadCloseDir(src)
 	a4_r31=31;
 	a4_jumpto=g_set_r4_thru_r11;
 	a5_jumpto=g_set_r3_from_r29;
-	a6_r29=size;
-	a6_jumpto=g_stdc_opendir;
-	extra1=size;
+	a6_r29=0x00000420;
+	a6_jumpto=g_sc_A0;
+	extra1=0x00000420;
 	a7_jumpto=restore_stack;
 	extra2=g_exit_chain;
 }
@@ -1104,6 +1176,43 @@ function callExportAndExit(r3,r4,r5,r6,r7,r8,r9,r10,r11,r30,r31,export_addr)
 	a4_r11=restore_stack;
 	a4_jumpto=g_set_r4_thru_r11;
 	a5_jumpto=g_exit_chain;
+}
+
+function openReadDeviceAndExit(device_id,src,dest)
+{
+	a1_r4=sc_sso_mode;
+	a1_r5=fd_addr;
+	a1_r6=sc_sso_flags;
+	a1_r9=magic_addr;// pointer to load next gadget into r0
+	a1_r11=sc_sys_storage_open;
+	a1_jumpto=g_set_r4_thru_r11;
+	extra2=device_flag;
+	extra3=device_id;
+	a2_jumpto=g_set_r3_with_ld;
+	a3_jumpto=g_set_r4_thru_r11;
+	a3_r30=g_set_r3_from_r29;
+	a4_r3=fd_addr;
+	a4_r4=sc_ssr_mode;
+	a4_r5=st_sec;
+	a4_r6=step_sector;
+	a4_r7=temp_addr_8C;
+	a4_r8=fd2_addr;
+	a4_r9=sc_ssr_flags;
+	a4_r11=sc_sys_storage_read;
+	a5_jumpto=g_set_r3_from_r29;
+	a6_r3=fd_addr;
+	a6_r11=sc_sys_storage_close;
+	a6_jumpto=g_set_r4_thru_r11;
+	a7_jumpto=g_set_r3_from_r29;
+	a8_r31=sc_shutdown_soft;
+	a8_jumpto=g_fopen_write_close;
+	a8_r6=sc_shutdown;
+	a8_r29=0x10;
+	a8_r30=temp_addr_8C;
+	a8_jumpto=g_set_r4_thru_r11;
+	a9_r5=0x00000000;
+	a9_r6=0x00000000;
+	a10_r31=g_sc_A0;
 }
 
 function useCustomStackFrame()
@@ -1182,39 +1291,7 @@ function useCustomStackFrame()
 		
 		/*
 		case "dump_idps_from_flash":
-		a1_r4=sc_sso_mode;
-		a1_r5=fd_addr;
-		a1_r6=sc_sso_flags;
-		a1_r9=magic_addr;// pointer to load next gadget into r0
-		a1_r11=sc_sys_storage_open;
-		a1_jumpto=g_set_r4_thru_r11;
-		extra2=device_flag;
-		extra3=device_id;
-		a2_jumpto=g_set_r3_with_ld;
-		a3_jumpto=g_set_r4_thru_r11;
-		a3_r30=g_set_r3_from_r29;
-		a4_r3=fd_addr;
-		a4_r4=sc_ssr_mode;
-		a4_r5=st_sec;
-		a4_r6=step_sector;
-		a4_r7=temp_addr_8C;
-		a4_r8=fd2_addr;
-		a4_r9=sc_ssr_flags;
-		a4_r11=sc_sys_storage_read;
-		a5_jumpto=g_set_r3_from_r29;
-		a6_r3=fd_addr;
-		a6_r11=sc_sys_storage_close;
-		a6_jumpto=g_set_r4_thru_r11;
-		a7_jumpto=g_set_r3_from_r29;
-		a8_r31=sc_shutdown_soft;
-		a8_jumpto=g_fopen_write_close;
-		a8_r6=sc_shutdown;
-		a8_r29=0x10;
-		a8_r30=temp_addr_8C;
-		a8_jumpto=g_set_r4_thru_r11;
-		a9_r5=0x00000000;
-		a9_r6=0x00000000;
-		a10_r31=g_sc_A0;
+		openReadDeviceAndExit(0x4,path_src_fp_addr,path_dest_fp_addr);
 		break;
 		*/
 		
@@ -1227,6 +1304,10 @@ function useCustomStackFrame()
 		{
 			syscallReadWriteFile(path_src_fp_addr,path_dest_fp_addr,file_size);
 		}
+		break;
+		
+		case "dir_read_write_test":
+		syscallReadWriteDirectory(path_src_fp_addr,path_dest_fp_addr);
 		break;
 		
 		case "sys_net_dump":
@@ -1273,10 +1354,6 @@ function useCustomStackFrame()
 		a25_r11=restore_stack;
 		break;
 		
-		case "dir_read_write_test":
-		exportStdcOpenReadCloseDir(path_src_fp_addr);
-		break;
-		
 		// uses restore_stack1
 		case "sys_fs_chmod":
 		syscallAndExit(path_dest_fp_addr,sc_chmod_arg,0,0,0,0,0,0,sc_sys_fs_chmod,temp_addr_8A,temp_addr_8B);
@@ -1308,40 +1385,6 @@ function useCustomStackFrame()
 		// uses restore_stack1
 		case "sys_fs_mkdir":
 		syscallAndExit(path_dest_fp_addr,sc_fs_mode,0,0,0,0,0,0,sc_sys_fs_mkdir,temp_addr_8A,temp_addr_8B);
-		break;
-		
-		case "sys_fs_mount":
-		a1_r3=path_fp_addr;
-		a1_r4=path_fp2_addr;
-		a1_r5=path_src_fp_addr;
-		a1_r6=fs_mount_arg4;
-		a1_r7=fs_mount_write_protection;
-		a1_r8=fs_mount_arg6;
-		a1_r9=fs_mount_arg7;
-		a1_r10=fs_mount_arg8;
-		a1_r11=sc_sys_fs_mount;
-		a1_jumpto=g_set_r4_thru_r11;
-		a2_jumpto=g_set_r3_from_r29;
-		a3_jumpto=g_sc_A0;
-		a4_r11=restore_stack;
-		a4_jumpto=g_set_r4_thru_r11;
-		a5_jumpto=g_exit_chain;
-		
-		// a1_r3=fs_mount_device_name;
-		// a1_r4=fs_mount_filesystem;
-		// a1_r5=fs_mount_device_path;
-		// a1_r6=fs_mount_arg4;
-		// a1_r7=fs_mount_write_protection;
-		// a1_r8=fs_mount_arg6;
-		// a1_r9=fs_mount_arg7;
-		// a1_r10=fs_mount_arg8;
-		// a1_r11=sc_sys_fs_mount;
-		// a1_jumpto=g_set_r4_thru_r11;
-		// a2_jumpto=g_set_r3_from_r29;
-		// a3_jumpto=g_sc_A0;
-		// a4_r11=restore_stack;
-		// a4_jumpto=g_set_r4_thru_r11;
-		// a5_jumpto=g_exit_chain;
 		break;
 		
 		// uses restore_stack1
@@ -1379,9 +1422,13 @@ function useCustomStackFrame()
 		syscallAndExit(path_dest_fp_addr,0,0,0,0,0,0,0,sc_sys_fs_unlink,temp_addr_8A,temp_addr_8B);
 		break;
 		
+		case "sys_fs_mount":
+		syscallAndExit(path_fp_addr,path_fp2_addr,path_src_fp_addr,fs_mount_arg4,fs_mount_write_protection,fs_mount_arg6,fs_mount_arg7,fs_mount_arg8,sc_sys_fs_mount,temp_addr_8A,temp_addr_8B);
+		break;
+		
 		// uses restore_stack1
 		case "sys_fs_unmount":
-		syscallAndExit(fs_unmount_path,fs_unmount_arg2,fs_unmount_arg3,0,0,0,0,0,sc_sys_fs_unmount,temp_addr_8A,temp_addr_8B);
+		syscallAndExit(mount_path,fs_unmount_arg2,fs_unmount_arg3,0,0,0,0,0,sc_sys_fs_unmount,temp_addr_8A,temp_addr_8B);
 		break;
 		
 		// does not use restore_stack1 restore_stack
@@ -1455,23 +1502,7 @@ function useCustomStackFrame()
 		
 		// uses restore_stack2
 		case "sys_game_get_temperature":
-		//syscallTwoAndExit(get_temperature_cell,get_temperature_temp_cell_ptr,0,0,0,0,0,0,sc_sys_game_get_temperature,temp_addr_8A,temp_addr_8B,get_temperature_rsx,get_temperature_temp_rsx_ptr,0,0,0,0,0,0,sc_sys_game_get_temperature,temp_addr_8A,temp_addr_8B);
-		
-		a1_r3=get_temperature_cell;
-		a1_r4=get_temperature_temp_cell_ptr;
-		a1_r11=sc_sys_game_get_temperature;
-		a1_jumpto=g_set_r4_thru_r11;
-		a2_jumpto=g_set_r3_from_r29;
-		a3_jumpto=g_sc_A0;
-		a4_r3=get_temperature_rsx;
-		a4_r4=get_temperature_temp_rsx_ptr;
-		a4_r11=sc_sys_game_get_temperature;
-		a4_jumpto=g_set_r4_thru_r11;
-		a5_jumpto=g_set_r3_from_r29;
-		a6_jumpto=g_sc_A0;
-		a7_r11=restore_stack;
-		a7_jumpto=g_set_r4_thru_r11;
-		a8_jumpto=g_exit_chain;
+		syscallTwoAndExit(get_temperature_cell,get_temperature_temp_cell_ptr,0,0,0,0,0,0,sc_sys_game_get_temperature,temp_addr_8A,temp_addr_8B,get_temperature_rsx,get_temperature_temp_rsx_ptr,0,0,0,0,0,0,sc_sys_game_get_temperature,temp_addr_8A,temp_addr_8B);
 		break;
 		
 		case "sys_sm_get_fan_policy":
@@ -1628,6 +1659,7 @@ function setChainOptions(chain)
 		setValueToHTML("path_src",usb_dir_ps3xploit);
 		setValueToHTML("path_dest",hdd_dir_ps3xploit);
 		alert(msg_option_not_available);
+		//init_rop.focus();
 		break;
 		
 		case "sys_net_dump":
@@ -1740,7 +1772,13 @@ function setChainOptions(chain)
 		setValueToHTML("path_src","");
 		setValueToHTML("path_dest","");
 		alert(msg_mount_test);
-		write_protection_toggle.focus();
+		mounting_device.focus();
+		break;
+		
+		case "sys_fs_unmount":
+		setValueToHTML("path_src","");
+		setValueToHTML("path_dest","");
+		init_rop.focus();
 		break;
 		
 		case "sys_fs_rename":
@@ -1779,12 +1817,6 @@ function setChainOptions(chain)
 		case "sys_fs_unlink":
 		setValueToHTML("path_src","");
 		setValueToHTML("path_dest",path_usb_symlink_dest);
-		init_rop.focus();
-		break;
-		
-		case "sys_fs_unmount":
-		setValueToHTML("path_src","");
-		setValueToHTML("path_dest","");
 		init_rop.focus();
 		break;
 		
@@ -1946,6 +1978,24 @@ function setChainOptions(chain)
 	
 }
 
+
+// Set Mounting Device
+function mountSetDevice(device){
+	mount_device = device.value;
+	mounting_fs.focus();
+} 
+
+// Set Mounting File System
+function mountSetFS(fs){
+	mount_fs = fs.value;
+	mounting_path.focus();
+} 
+
+// Set Mounting File System
+function mountSetPath(path){
+	mount_path = path.value;
+	write_protection_toggle.focus();
+} 
 
 // Get Process ID
 function getProcessID(id){
@@ -2329,6 +2379,7 @@ function saveMemdumpValues()
 	memdump_end_text=memdump_end.toString(16).toUpperCase();// this is size [fix later]
 	
 	alert(msg_memdump_size+memdump_end_text+msg_memdump_start_addr+memdump_addr_text+msg_memdump_end_addr+memdump_size_text);
+	memdump_size=memdump_end;
 	
 	init_rop.focus();
 }
