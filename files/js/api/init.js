@@ -14,7 +14,7 @@ var cookie_get;
 var cookie_set;
 
 // Supported Firmware Versions
-var fwCompat = ["4.00","4.10","4.11","4.20","4.21","4.25","4.30","4.31","4.40","4.41","4.45","4.46","4.50","4.53","4.55","4.60","4.65","4.66","4.70","4.75","4.76","4.78","4.80","4.81","4.82"];
+var fwCompat = ["4.00","4.10","4.11","4.20","4.21","4.25","4.30","4.31","4.40","4.41","4.45","4.46","4.50","4.53","4.55","4.60","4.65","4.66","4.70","4.75","4.76","4.78","4.80","4.81","4.82","4.83","4.84"];
 var vshType="";
 
 // Offsets and Compatibility
@@ -26,28 +26,49 @@ var fwVersion = ua.substring(ua.indexOf("5.0 (") + 19, ua.indexOf(") Apple"));
 
 // Set Offset Defaults
 var g_toc;
+var t_disc_load_alloc;
+
 var g_1;// leftover webkit code
 var g_2;// initial stack control
 var g_set_r4_thru_r11;// set r4-r11 + r29-r31
+var g_set_high_only;
+var g_set_r0_from_r31;
 var g_set_r3_from_r29;// set r3 from r29
 var g_set_r3_with_ld;
+var g_set_r3_with_lwz_from_r31;
 var g_set_r3_and_clear;
 var g_set_r3_and_sc;
 var g_set_r5_from_r29;
+var g_set_r5_from_r29_alt;
+var g_set_r5_from_r31;
+var g_set_r5_from_r31_alt1;
+var g_set_r5_from_r31_alt2;
+var g_set_r6_from_r31;
+var g_set_r7_from_r31;
 var g_set_r20_thru_r31;
 var g_set_r31_from_r23;
+var g_set_r12_110;
 var g_set_r31_E8;
 var g_set_r31_F8;
+var g_set_r31_108;
 var g_store_r3_into_r31;
 var g_sc_80;// sc then load r0 from r1+0x80
 var g_sc_90;// sc then load r0 from r1+0x90
 var g_sc_A0;// sc then load r0 from r1+0xA0
 var g_sc_set_r3_from_r9;// set r3 from r9 and sc
 var g_sc_set_r3_from_r10;// set r3 from r10 and sc
-var g_fopen_write_close;
+var g_sc_set_r3_with_lwz_from_r31;
+var g_disc_load_cmp_stackframe;
+
+var g_default_user_login_id;
+var g_printf;
+var g_printf2;
+var g_printf3;
+var g_unk_lwmutex_lock;
+var g_unk_r11_compare;
+
 var g_fsopen_write_close;
-var g_mount_hdd1;
-var g_unk_game_debug_pafjob;
+var g_cellfs_open_write_close1;
 var g_mount_flash;
 var g_unk_user_id1;
 var g_unk_user_id2;
@@ -57,12 +78,9 @@ var g_unk_registry_restore;
 var g_unk_explore_plugin_bin;
 var g_unk_psp_rif;
 var g_unk_login_xmb;
-var g_start_busy_icon;
 var g_xmb_restore;
 var g_unk_pkg1;
 var g_unk_sync;
-var g_unk_bg_download1;
-var g_unk_bg_download2;
 var g_unk_post_update1;
 var g_unk_post_update2;
 var g_unk_crash_report1;
@@ -70,26 +88,121 @@ var g_unk_http_client;
 var g_unk_fsck;
 var g_unk_debug1;
 var g_tty_write;
-var g_create_new_user;
-var g_remove_act_dat;
-var g_stdc_opendir;
-var g_stdc_readdir;
-var g_cellfs_opendir;
-var g_cellfs_readdir;
-var g_cellfs_closedir;
+var g_unk_act_dat1;
+var g_unk_act_dat2;
+var g_unk_rif1;
+var g_unk_rif2;
+var g_unk_rif3;
+var g_unk_exdata_edat1;
+var g_unk_thread1;
+var g_unk_prx1;
+var g_unk_mount_bdvd;
+var g_unk_mount_fat;
+var g_unk_display_res1;
+var g_unk_display_res2;
+var g_unk_game_res;
+var g_unk_alpha_numeric;
+var g_unk_update_game_data;
+
+// Exits
+var g_init_reboot;
+var g_init_shutdown;
 var g_exit_chain;// graceful exit
 var g_init_shutdown;// init beep and shutdown
+
+// Subs
+var s_cellfs_rw;
+var s_cellfs_read;
+var s_cellfs_write;
+var s_create_new_user;
+var s_disc_load_check;
+var s_disc_load_check_type1;
+var s_disc_load_check_type2;
+var s_disc_load_check_type3;
+var s_unk_bg_download1;
+var s_unk_bg_download2;
+var s_unk_download_exec_kind;
+var s_mount_hdd1;
+var s_ps_button_bp;
+var s_remove_act_dat;
+var s_remove_exdata;
+var s_start_busy_icon;
+var s_sys_ppu_thread_detach;
+var s_sys_ppu_thread_detach_sleep;
+var s_sys_rwlock_wlock_unlock;
+var s_sys_spu_image_close;
+var s_sys_spu_initialize;
+var s_sys_spu_image_get_information;
+var s_sys_spu_thread_group_create;
+var s_sys_spu_thread_initialize;
+var s_sys_spu_thread_group_join;
+var s_sys_spu_thread_group_start;
+var s_unk_act_dat;
+var s_unk_bdvd_ps3_hdd_cache;
+var s_unk_black_screen;
+var s_unk_blue_screen;
+var s_unk_create_new_user2;
+var s_unk_create_new_user3;
+var s_unk_flash2_post_update;
+var s_unk_game_exec;
+var s_unk_game_application;
+var s_unk_game_debug_pafjob;
+var s_unk_manager_signout;
+var s_unk_mount_hdd;
+var s_unk_network;
+var s_unk_network_printf;
+var s_unk_np_debug;
+var s_unk_npmt;
+var s_unk_npmt2;
+var s_unk_r9_fix;
+var s_unk_sys_util;
+var s_unk_port_send_destroy;
+var s_unk_port_timer_send_destroy;
+var s_unk_premo_plugin;
+var s_unk_psx_ps2;
+var s_unk_rsx_device_map;
+var s_unk_sys_trace;
+var s_unk_thread_exit;
+var s_unk_thread_sc37;
+var s_unk_tty_write;
+var s_unk_upload_util;
+var s_unk_widget;
+
+// Exports
+var e_cellfs_closedir;
+var e_cellfs_opendir;
+var e_cellfs_readdir;
+var e_fopen_write_close;
+var e_fs_open_write_close;
+var e_memset;
+var e_stdc_opendir;
+var e_stdc_readdir;
+var e_sys_free;
+var e_sys_spu_image_close;
+var e_unk_boot2;
+var e_unk_game_plugin;
+var e_unk_vsh_printf;
+var e_unk_xmb_plugin;
+var e_turnoff;
+var e_turnoff2;
+var e_update_mgr_get_status;
+
 
 var debug_mode=false;// log debug to screen
 var disable_trigger=false;// used for testing with alert
 
 var page_args_set=false;
 var disable_reboot=true;
+var init_after_select=false;// will force jump to load_rop button if true after selection made
 
 // Auto-Reload Page Flag
 var auto_reload=false;
 
+// Stackframe Chain Placeholder
+var chain_stackframe="";
+
 // Memory Searching
+var firstRun=true;
 var t_out=0;
 var total_loops=0;
 var max_loops=20;
@@ -97,13 +210,13 @@ var failCount=0;
 var failCountMax=1;
 var search_max_threshold = 70*0x100000;
 var search_max_threshold_backup = 70*0x100000;
-var search_base_offset = 0x80200000;
-var search_base_offset_min = 0x80200000;
-var search_base_offset_max = search_base_offset_min+0x230000;
-var search_base_offset_adjust=0x200000;
-var search_base_offset_adjust_jump2=0x100000;
-var search_base_offset_adjust_jump1=0x100000;
 var search_range_size = 0x200000;
+var search_base_offset = 0x80250000;// 0x80190000
+var search_base_offset_min = 0x80250000;
+var search_base_offset_max = search_base_offset_min+search_range_size+0x40000;
+var search_base_offset_adjust=0xC0000;
+var search_base_offset_adjust_jump2=0x00000;
+var search_base_offset_adjust_jump1=0x00000;
 
 // store found offsets
 var found_offsets=[];
@@ -138,18 +251,25 @@ var hdd_fd2;
 var fd;
 var fd2;
 
+// Other Pointers
+var magic;
+var magic2;
+
 // Used for string verification
-var base;
-var stk;
-var j2;
-var j1;
+var base=0;
+var stk=0;
+var j2=0;
+var j1=0;
+var basev=0;
+var stkv=0;
+var j2v=0;
+var j1v=0;
 var base_found=false;
-var stk_found=false;
+var stackframe_found=false;
 var j2_found=false;
 var j1_found=false;
 var base_verified=false;
-var stk_verified=false;
-var stk_verified_fake=true;
+var stackframe_verified=false;
 var j2_verified=false;
 var j1_verified=false;
 var allOffsetsFound=false;
@@ -157,14 +277,13 @@ var allOffsetsVerified=false;
 var result_msg="";
 
 // Required Jumps
-var base_fp;
-var stack_frame;
-var jump_2;
-var jump_1;
+var base_fp=1;
+var stack_frame=1;
+var jump_2=1;
+var jump_1=1;
 var verify_offsets=true;
-var verify_stackframe=false;
-var offsets_verified=false;
-var stackframe_verified=false;
+var verify_stackframe=true;
+var offsets_verified=false;// superseded
 
 // Default Addresses
 var base_fp_addr=0;
@@ -184,6 +303,8 @@ var jump_2_addr=0;
 var jump_1_addr=0
 var file_mode_fp_addr=0;
 var write_bytes_addr=0;
+var magic_addr=0;
+var magic2_addr=0;
 
 var hdd_fp_addr_backup=0;
 var usb_fp_addr_backup=0;
@@ -194,7 +315,7 @@ var colortext="#EB6C03";
 var colorActive="#279947";
 var colorSuccess="#FFFFFF";
 var colorVerified="#EB6C03";
-var colorVerifiedFake="#5B6C03";
+var colorVerifiedFake="#5B0C03";
 var base_fp_color=color;
 var stack_frame_color=color;
 var jump_2_color=color;
@@ -218,7 +339,7 @@ var isFW356=false;
 
 var write_protect=true;
 
-var str2u_adjusted=false;// used for str2u
+var str2u_adjusted=false;// obsolete
 
 var write_bytes=0x00000000;// used for db_rebuild and others
 var dummy_text="Hello From PS3Xploit Team!";
@@ -337,7 +458,7 @@ var addr_psid;
 var out_psid="";
 
 var log_div;
-var msg;// generic message text placeholder
+var msg="";// generic message text placeholder
 var user_id="00000001";
 var user_home_path=""
 
@@ -376,6 +497,7 @@ var title_id="PS3XPLOIT";
 var mount_device="CELL_FS_IOS:BUILTIN_FLSH1";
 var mount_fs="CELL_FS_FAT";
 var mount_path="/dev_blind";
+var usb_mount=false;// change r9 to pointer if usb
 
 var db_rebuild_bytes=0x000003E9;
 var memdump_addr=0x80000000;
@@ -394,6 +516,10 @@ var rtn_val_addr=0x8A000100;
 var minver=0x00000000;
 var minver_seen=false;
 var minver_addr=0x89FFFFF0;
+
+var filesize=0x00000000;
+var filesize_seen=false;
+var filesize_addr=0x89EFFFF0;
 
 var temps_both_seen=false;
 

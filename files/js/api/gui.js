@@ -23,6 +23,7 @@ function showGuiText()
 	document.getElementById('gui_chk_default_settings').innerHTML=gui_chk_default_settings;
 	document.getElementById('gui_chk_disable_trigger').innerHTML=gui_chk_disable_trigger;
 	document.getElementById('gui_chk_write_protect').innerHTML=gui_chk_write_protect;
+	document.getElementById('gui_chk_usb_mount').innerHTML=gui_chk_usb_mount;
 	document.getElementById('gui_chk_flash_type_nand').innerHTML=gui_chk_flash_type_nand;
 	document.getElementById('gui_chk_flash_type_nor').innerHTML=gui_chk_flash_type_nor;
 	document.getElementById('gui_chk_flash_type_emmc').innerHTML=gui_chk_flash_type_emmc;
@@ -51,6 +52,7 @@ function showGuiText()
 	
 	// Dumping
 	document.getElementById('gui_txt_preset_chains_dumping').innerHTML=gui_txt_preset_chains_dumping;
+	document.getElementById('gui_txt_option_webkit_search_area').innerHTML=gui_txt_option_webkit_search_area;
 	document.getElementById('gui_txt_option_system_info_multi_dump').innerHTML=gui_txt_option_system_info_multi_dump;
 	document.getElementById('gui_txt_option_dump_lv2_syscall_table').innerHTML=gui_txt_option_dump_lv2_syscall_table;
 	document.getElementById('gui_txt_option_mem_dump_test').innerHTML=gui_txt_option_mem_dump_test;
@@ -58,17 +60,28 @@ function showGuiText()
 	document.getElementById('gui_txt_option_dump_idps_from_mem').innerHTML=gui_txt_option_dump_idps_from_mem;
 	document.getElementById('gui_txt_option_sys_net_dump').innerHTML=gui_txt_option_sys_net_dump;
 	document.getElementById('gui_txt_sys_sm_get_platform_info').innerHTML=gui_txt_sys_sm_get_platform_info;
+	document.getElementById('gui_txt_sys_storage_get_device_info').innerHTML=gui_txt_sys_storage_get_device_info;
 	// document.getElementById('gui_txt_option_dump_idps_from_flash').innerHTML=gui_txt_option_dump_idps_from_flash;
 	
 	// File System
 	document.getElementById('gui_txt_preset_chains_file_system').innerHTML=gui_txt_preset_chains_file_system;
+	document.getElementById('gui_txt_option_create_new_user').innerHTML=gui_txt_option_create_new_user;
+	document.getElementById('gui_txt_option_mount_usb_as_bdvd').innerHTML=gui_txt_option_mount_usb_as_bdvd;
+	document.getElementById('gui_txt_option_mount_usb_as_bdvd_no_disc').innerHTML=gui_txt_option_mount_usb_as_bdvd_no_disc;
+	document.getElementById('gui_txt_option_mount_other_as_bdvd').innerHTML=gui_txt_option_mount_other_as_bdvd;
+	document.getElementById('gui_txt_option_mount_bdvd_as_ps3_disc').innerHTML=gui_txt_option_mount_bdvd_as_ps3_disc;
 	document.getElementById('gui_txt_option_db_rebuild').innerHTML=gui_txt_option_db_rebuild;
+	document.getElementById('gui_txt_option_get_filesize').innerHTML=gui_txt_option_get_filesize;
 	document.getElementById('gui_txt_option_file_read_write_test').innerHTML=gui_txt_option_file_read_write_test;
 	document.getElementById('gui_txt_option_dir_read_write_test').innerHTML=gui_txt_option_dir_read_write_test;
 	
 	// Fun
 	document.getElementById('gui_txt_preset_chains_fun').innerHTML=gui_txt_preset_chains_fun;
-	document.getElementById('gui_txt_option_fun_test').innerHTML=gui_txt_option_fun_test;
+	document.getElementById('gui_txt_option_test_only').innerHTML=gui_txt_option_test_only;
+	// document.getElementById('gui_txt_option_fun_test').innerHTML=gui_txt_option_fun_test;
+	document.getElementById('gui_txt_option_xmb_plugin_test').innerHTML=gui_txt_option_xmb_plugin_test;
+	document.getElementById('gui_txt_option_busy_icon_test').innerHTML=gui_txt_option_busy_icon_test;
+	document.getElementById('gui_txt_option_vsh_printf_test').innerHTML=gui_txt_option_vsh_printf_test;
 	
 	
 	// Other Syscall Chains
@@ -233,6 +246,7 @@ function showGuiText()
 	document.getElementById('gui_chk_search_verify_stackframe').innerHTML=gui_chk_search_verify_stackframe;
 	document.getElementById('gui_chk_search_debug_output').innerHTML=gui_chk_search_debug_output;
 	
+	document.getElementById('msg_search_ready').innerHTML=msg_search_ready;
 	document.getElementById('gui_txt_search_found_offsets').innerHTML=msg_found_offsets + gui_txt_search_found_offsets;
 	
 	document.getElementById('gui_txt_option_init_rop_btn').innerHTML=gui_txt_option_init_rop_btn;

@@ -39,6 +39,7 @@ var open_path=0x8A000000;
 var open_flag_read=0x00000000;
 var open_flag_create=0x00000241;
 var open_flag_create_append=0x441;
+var open_flag_create_excl=0xC1;
 var open_fd=0x00000000;
 var open_size_default=0x00000140;
 var open_mode=0x8A0000D0;
@@ -75,6 +76,7 @@ var sc_sys_fs_chmod=0x00000342;
 var sc_chmod_arg=0x00000FFF;
 //var sc_chmod_400=0x00000F00;
 //var sc_chmod_640=0x00000FA0;
+//var sc_chmod_644=0x00000FAA;
 //var sc_chmod_660=0x00000FB0;
 var sc_chmod_700=0x00000FC0;
 var sc_chmod_701=0x00000FC1;
@@ -140,6 +142,7 @@ var fs_mount_write_protection_off=0x00000000;
 var fs_mount_write_protection_on=0x00000001;
 var fs_mount_arg6=0x00000000;
 var fs_mount_arg7=0x00000000;
+var fs_mount_arg7_usbptr=0x8A000000;
 var fs_mount_arg8=0x00000000;
 
 // sys_fs_unmount Parameters
@@ -158,8 +161,14 @@ var fs_newfs_arg3=0x8A000200;
 // int sys_storage_get_device_info(uint64_t device, uint8_t *buffer)
 // buffer[40]=total sectors,buffer[48]=sector size,buffer[53]=writable
 var sc_sys_storage_get_device_info=0x00000261;
-var storage_get_device_info_device=0x00000007;// hdd default
+
+// requires using ld instruction to load 8 bytes (example: 01000000+deviceid)
+var storage_get_device_info_device=0x00000007;// default
+var storage_get_device_info_device_hdd=0x00000007;
+var storage_get_device_info_device_nand=0x00000001;
+var storage_get_device_info_device_nor=0x00000004;
 var storage_get_device_info_buffer_ptr=0x8A0000000;// returns id
+
 var storage_get_device_info_arg3=0x00000000;// unk
 var storage_get_device_info_arg4=0x00000000;// unk
 
@@ -189,8 +198,8 @@ var sc_sys_storage_write=0x0000025B;
 // sys_fs_stat Parameters
 var sc_sys_fs_stat=0x00000328;
 var sys_fs_stat_path=0x00000000;
-var sys_fs_stat_sb=0x8A000000;
 
+var sys_fs_stat_sb=0x8A000000;
 // sys_fs_fstat  Parameters
 var sc_sys_fs_fstat =0x00000329;
 var sys_fs_fstat_path=0x00000000;
@@ -484,5 +493,56 @@ var sys_sm_get_platform_info_ptr=0x8A000000;
 var sys_sm_get_platform_info_size=0x00000020;
 
 
+// int sys_prx_register_library(void* library)
+var sc_sys_prx_register_library=0x000001E6;
+var sys_prx_register_library_ptr=0x8A000000;
 
+// int sys_prx_unregister_library(void* library)
+var sc_sys_prx_unregister_library=0x000001E7;
+var sys_prx_unregister_library_ptr=0x8A000000;
+
+// sys_prx_id_t sys_prx_load_module(const char* path, sys_prx_flags_t flags, sys_prx_load_module_option_t* pOpt)
+var sc_sys_prx_load_module=0x000001E0;
+var sys_prx_load_module_path=0x8A001000;
+var sys_prx_load_module_flags=0x00000000;
+var sys_prx_load_module_popt=0x8A002000;// pointer to 0
+
+// int sys_prx_start_module(sys_prx_id_t id, sys_prx_flags_t flags, sys_prx_start_t* pOpt)
+var sc_sys_prx_start_module=0x000001E1;
+var sys_prx_start_module_id=0x00000000;
+var sys_prx_start_module_flags=0x00000000;
+var sys_prx_start_module_popt=0x00000000;
+var sys_prx_start_module_unk1=0x8A003000;
+var sys_prx_start_module_unk2=0x00000000;
+
+// syscall(879, 0x10001, out_buffer[0x10]) 
+var sc_sys_ss_media_id=0x0000036F;
+var sys_ss_media_id_arg1=0x00010001;
+//var sys_ss_media_id_arg1=0x00010002;
+var sys_ss_media_id_arg2_ptr=0x8A000000;
+
+// 2Params: 0x20000(=get_disc_access_control),uint32_t * disc_access / 0x20001(=set_disc_access_control),1
+var sc_sys_ss_disc_access_control=0x0000036C;
+var get_disc_access_control=0x00020000;
+var set_disc_access_control=0x00020001;
+var sys_set_disc_access_control_arg1=0x00020000;
+var sys_set_disc_access_control_arg2=0x00000001;
+
+// int sys_ss_get_cache_of_product_mode(uint8_t *ptr [1]);
+// returns 1 byte [Example Slim 2001 NOR: FF]
+var sc_sys_ss_get_cache_of_product_mode=0x00000369;
+var sys_ss_get_cache_of_product_mode_ptr=0x8A000000;
+
+// int sys_ss_get_cache_of_flash_ext_flag(uint8_t *flag [1])
+// returns 1 byte [Example Slim 2001 NOR: FE]
+var sc_sys_ss_get_cache_of_flash_ext_flag=0x0000036A;
+var sys_ss_get_cache_of_flash_ext_flag_ptr=0x8A000100;
+
+// int sys_ss_get_boot_device(uint8_t * buf [8]);
+// returns 8 bytes [Example Slim 2001 NOR: 00 00 00 00 00 00 01 11]
+var sc_sys_ss_get_boot_device=0x0000036B;
+var sys_ss_get_boot_device_ptr=0x8A000200;
+
+var sc_unk_986=0x000003DA;
+var sc_unk_986_ptr=0x8A000500;
 

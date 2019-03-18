@@ -247,3 +247,20 @@ body {
 #debugging_chains {
 	display: none;
 }
+
+#gui_chk_search_verify_jumps {
+	display: none;
+}
+#verify_offsets {
+	display: none;
+}
+#gui_chk_search_verify_stackframe {
+	display: none;
+}
+#verify_stackframe {
+	display: none;
+}
+
+#search_setup {
+	display: none;
+}

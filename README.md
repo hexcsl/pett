@@ -2,16 +2,16 @@
 
 * Official WebSite: [**ps3xploit.com**](https://ps3xploit.com)
 * Official PS3 WebKit ROP Tutorial Thread at: [**psx-place.com**](http://www.psx-place.com/threads/webkit-rop-chain-tutorials-creation-editing-debugging-ps3-development.15826)
-* Official Twitter Main Releases: [**twitter.com/esc0rtd3w**](https://twitter.com/esc0rtd3w)
-* Current PETT Live Version: [**ps3xploit.github.io/pett**](https://ps3xploit.github.io/pett) (Alert: This not work on PS3 Web Browser)
+* Current PETT Live Version: [**ps3xploit.github.io/pett**](https://ps3xploit.github.io/pett) (Alert: This domain not yet work on PS3 Web Browser)
 
 <br/>
 
 <h3 align="center">Preview Images</h3>
 
-<p align="center"><img src="https://i.imgur.com/q391Fkr.png" width="75%"></p>
-<p align="center"><img src="https://i.imgur.com/w5dLRUf.png" width="75%"></p>
-<p align="center"><img src="https://i.imgur.com/PVe2cbt.png" width="75%"></p>
+<p align="center"><img src="https://i.imgur.com/7UG3Ptf.png" width="75%"></p>
+<p align="center"><img src="https://i.imgur.com/bmDmMWQ.png" width="75%"></p>
+<p align="center"><img src="https://i.imgur.com/NLGSpqH.png" width="75%"></p>
+<p align="center"><img src="https://i.imgur.com/pPY5egd.png" width="75%"></p>
 
 <br/>
 
@@ -21,27 +21,66 @@
 
 <h3>Multi-Language Translator Credits</h3>
 
-Language		| Code  | Translators
----------------:|:-----:|:-----------
-Arabic			| ar_ar | @[**Azooz_yos**](https://twitter.com/Azooz_yos)
-Català Espanya	| es_ct | @[**minicm94123**](https://twitter.com/minicm94123)
-Dutch NL		| nl_nl | @[**CompanyFart**](https://twitter.com/CompanyFart)
-French			| fr_fr | @[**valentinbreiz**](https://twitter.com/valentinbreiz) / @[**humanshield85**](https://twitter.com/humanshield85)
-German DE		| de_de | @[**FlatracerMod**](https://twitter.com/FlatracerMod)
-Hindi IN		| hi_in | @[**minicm94123**](https://twitter.com/minicm94123)
-Italian			| it_it | @[**neno20115**](https://twitter.com/neno20115)
-Polish			| pl_pl | @[**Roxu14**](https://twitter.com/Roxu14)
-Portuguese BR	| pt_br | @[**HollowChris**](https://twitter.com/HollowChris) / @[**Caio99BR**](https://twitter.com/Caio99BR)
-Russian			| ru_ru | @[**ErikPshat**](https://twitter.com/ErikPshat)
-Spanish LA		| es_la | @[**Ripp3RkoS**](https://twitter.com/Ripp3RkoS)
-Spanish Spain	| es_sp | @[**Ivoyko**](https://twitter.com/Ivoyko)
-Turkish TR   	| tr_tr | @[**yanealaka**](https://twitter.com/yanealaka)
+Language                 | Code   | Translators
+------------------------:|:------:|:-----------
+Arabic                   | ar     | @[**Azooz_yos**](https://twitter.com/Azooz_yos)
+Spanish (Catalan)        | ca     | @[**minicm94123**](https://twitter.com/minicm94123)
+German                   | de-DE  | @[**FlatracerMod**](https://twitter.com/FlatracerMod)
+Spanish (Latin American) | es-419 | @[**Ripp3RkoS**](https://twitter.com/Ripp3RkoS)
+Spanish                  | es-ES  | @[**Ivoyko**](https://twitter.com/Ivoyko)
+French                   | fr-FR  | @[**valentinbreiz**](https://twitter.com/valentinbreiz) / @[**humanshield85**](https://twitter.com/humanshield85)
+Dutch                    | nl-NL  | @[**CompanyFart**](https://twitter.com/CompanyFart)
+Hindi                    | hi     | @[**minicm94123**](https://twitter.com/minicm94123)
+Italian                  | it-IT  | @[**neno20115**](https://twitter.com/neno20115) / @[**Alexandersss**](https://github.com/Alexandersss)
+Polish                   | pl     | @[**Roxu14**](https://twitter.com/Roxu14)
+Portuguese (Brazil)      | pt-BR  | @[**HollowChris**](https://twitter.com/HollowChris) / @[**Caio99BR**](https://twitter.com/Caio99BR)
+Russian                  | ru     | @[**ErikPshat**](https://twitter.com/ErikPshat)
+Turkish                  | tr     | @[**yanealaka**](https://twitter.com/yanealaka)
 
 <br/>
 
 <h3>Version History</h3>
 
+v0.2.3
+* Added 4.82 DEX, 4.83 CEX, 4.84 CEX, and 4.84 DEX Offsets (must use 4.82 silk_webkit.sprx for 4.83+)
+* Updated All Language Files 
+
+v0.2.2
+* Fixed Search
+* Updated Language Revision To 0016
+* Added New Mount Paths and Parameters
+
+v0.2.1
+* Added Mount USB as BDVD and Other Preset Chains
+* Updated Offset Verification To Eliminate Random Freezing
+* Added USB Pointer Toggle For Mounting Options
+* Added New Paths For Source and Destination Presets
+* Updated Some Testing Stuff
+
+v0.2.0
+* Updated Offset Search Again. Cleaned Up Loader JS
+* Fixed Path Convert Issues
+* Added Get FileSize Chain To File System Presets
+* Added Package Options To Paths
+* Added A Test Chain Default For Devs on DEX
+* Updated All Languages From en_us Base (thanks @Caio99BR)
+
+v0.1.9
+* Added WebKit String Search Area To Dumping Chains
+* Added Message After Exec Button Clicked, and Before Success/Done Message
+* Updated pt_BR Language (thanks @Caio99BR)
+
+v0.1.8
+* Fixed StackFrame Verify. All Offsets Are Now Verified Automatically
+* Added Ready Message as Default Before Chain or Options are Selected
+* Removed Custom Search Tweaks From GUI (no longer needed)
+* Updated Offset Search
+
 v0.1.7
+* Updated Language Base Files and Fixed Missing Variables (thanks @Caio99BR)
+* Updated "Fun" Preset Chains
+* Added "Create New User" under File Directory Chains
+* Added several gadget addresses to test
 * Updated Mount Options
 
 v0.1.6

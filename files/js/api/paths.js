@@ -40,12 +40,15 @@ var dev_hdd0_vm="/dev_hdd0/vm/";
 var dev_hdd0_vsh="/dev_hdd0/vsh/";
 var dev_hdd0_xmlhost="/dev_hdd0/xmlhost/";
 
-
 var dev_hdd0_home_exdata="/dev_hdd0/home/00000001/exdata/";
 
 var dev_hdd1_crash_report="/dev_hdd1/crash_report/";
 var dev_hdd1_crash_report_kernel="/dev_hdd1/crash_report/kernel/";
 var log_ps3crash_kernel="/dev_hdd1/crash_report/kernel/ps3crash-kernel.dat";
+
+var path_home_current='/dev_hdd0/home/%08u/';
+var path_actdat='/dev_hdd0/home/%08u/exdata/act.dat';
+var path_reg_userid='/setting/user/lastLoginUserId';
 
 var path_db_rebuild="/dev_hdd0/mms/db.err";
 
@@ -67,6 +70,18 @@ var path_hdd2_default="/dev_hdd2/";
 var path_flash_default="/dev_flash/";
 var path_flash2_default="/dev_flash2/";
 var path_flash3_default="/dev_flash3/";
+
+
+var flash2_etc="/dev_flash2/etc";
+var flash2_atrac="/dev_flash2/etc/activation/atrac";
+var flash2_backup="/dev_flash2/etc/backup/xRegistry.sys";
+var flash2_savedLastCreatedUserId="/dev_flash2/etc/savedLastCreatedUserId";
+var flash2_xRegistry="/dev_flash2/etc/xRegistry.sys";
+
+var flash3_crl1="/dev_flash3/data-revoke/crl/CRL1";
+var flash3_crl2="/dev_flash3/data-revoke/crl/CRL2";
+var flash3_drl1="/dev_flash3/data-revoke/drl/DRL1";
+var flash3_drl2="/dev_flash3/data-revoke/drl/DRL2";
 
 var rename_test_src="/dev_hdd0/test/";
 var rename_test_dest="/dev_hdd0/PS3Xploit/";
@@ -103,6 +118,7 @@ var path_storage_get_device_info_dump="/dev_usb000/sys_storage_get_device_info.b
 var path_storage_report_devices_dump="/dev_usb000/sys_storage_report_devices.bin";
 var sys_ss_utoken_lv2_sc_table_dump="/dev_usb000/sys_ss_utoken_lv2_sc_table_dump.bin";
 var sys_sm_get_platform_info_dump="/dev_usb000/sys_sm_get_platform_info.bin";
+var webkit_search_area_dump="/dev_usb000/webkit_search_area-0x80100000-0x806FFFFF.bin";
 
 var path_usb_memdump0="/dev_usb000/dump_0x00000000-0x04D5FFF9.bin";
 var path_usb_memdump1="/dev_usb000/dump_0x10000000-0x1FFFFFFF.bin";
@@ -150,8 +166,5 @@ function setPathNames()
 	
 	path_fp="/dev_usb000/test.bin";
 	path_fp2="/dev_hdd0/test.bin";
-	
-	//path_name=str2u(path);
-	//return path_name;
 }
 

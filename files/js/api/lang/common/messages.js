@@ -1,17 +1,18 @@
-﻿// PS3 Default Messages [English US]
+﻿// PS3Xploit Index GUI Common Messages
 // PS3Xploit Team 2018 / ps3xploit.com
 
 // Common Language
 
 // Index GUI Version
-var gui_version="<font color='#FFF' size='3'>v0.1.7</font>";
-var global_minimum_lang_revision="0007";
+var gui_version="<font color='#FFF' size='3'>v0.2.3</font>";
+var global_minimum_lang_revision="0017";
 
 // Other Messages
 var msg_thread_name="Hello_From_PS3Xploit";
 
 // Debugging
 var msg_debug_placeholder="Lazy XP +1";
+var gui_txt_option_debug_placeholder="beep_test";
 
 // Check Memory
 var msg_check_memory="checkMemory: ";
@@ -21,6 +22,9 @@ var offset_find_base_fp="base_fp";
 var offset_find_stack_frame="stack_frame";
 var offset_find_jump2="jump2";
 var offset_find_jump1="jump1";
+
+var offset_find_success="success";
+var offset_find_verified="verified";
 
 // Index GUI text
 var gui_team="PS3Xploit Team: <b><font color='#7700DA'>W</font><font color='#FFF'> | </font><font color='#7700DA'>esc0rtd3w</font><font color='#FFF'> | </font><font color='#7700DA'>habib</font><font color='#FFF'> | </font><font color='#7700DA'>bguerville</font></b>";
@@ -72,6 +76,7 @@ var gui_txt_option_sys_ppu_thread_start="sys_ppu_thread_start";
 var gui_txt_option_sys_ppu_thread_stop="sys_ppu_thread_stop";
 
 // Network
+var gui_txt_option_url="URL: ";
 var gui_txt_syscall_chains_sys_net="sys_net";
 var gui_txt_option_sys_net_open_dump="sys_net_open_dump";
 var gui_txt_option_sys_net_read_dump="sys_net_read_dump";
@@ -90,4 +95,4 @@ var gui_txt_option_chown="chown";
 var gui_txt_set_titleid="PS3XPLOIT";
 
 // Default Found Offsets
-var gui_txt_search_found_offsets=": base_fp: 0x0 | stack_frame_addr: 0x0 | jump_2_addr: 0x0 | jump_1_addr: 0x0";
+var gui_txt_search_found_offsets="base_fp: 0x0 | stack_frame_addr: 0x0 | jump_2_addr: 0x0 | jump_1_addr: 0x0</b></h4>";

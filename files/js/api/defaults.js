@@ -46,8 +46,6 @@ function initRopDefaults()
 	// Store Selected Flash Type Backup For Searching
 	ftype=type;
 	
-	str2u_adjusted=false;// reset str2u adjust
-	
 	// Reset Flag
 	allOffsetsFound=false;
 	
@@ -185,233 +183,10 @@ function logFlashType()
 	logAdd(msg_search_flash_type_start+flash_type_text+msg_search_flash_type_end);
 }
 
-// Search Related
-function setDefaultSearchParams()
+function showWaitMessage(msg)
 {
-	switch(flash_type_select)
-	{
-		// NAND
-		case 0:
-		search_max_threshold = 70*0x100000;
-		search_max_threshold_backup = 70*0x100000;
-		search_base_offset = 0x80200000;
-		search_base_offset_min = 0x80200000;
-		search_base_offset_max = search_base_offset_min+0x230000;
-		search_base_offset_adjust=0xA0000;
-		search_base_offset_adjust_jump2=0x20000;
-		search_base_offset_adjust_jump1=0x30000;
-		search_range_size = 0x200000;
-		if(debug_mode){logFoundOffsets();}
-		if(debug_mode){logFlashType();}
-		break;
-		
-		// NOR
-		case 1:
-		search_max_threshold = 70*0x100000;
-		search_max_threshold_backup = 70*0x100000;
-		search_base_offset = 0x80200000;
-		search_base_offset_min = 0x80200000;
-		search_base_offset_max = search_base_offset_min+0x230000;
-		search_base_offset_adjust=0xA0000;
-		search_base_offset_adjust_jump2=0x20000;
-		search_base_offset_adjust_jump1=0x30000;
-		search_range_size = 0x200000;
-		if(debug_mode){logFoundOffsets();}
-		if(debug_mode){logFlashType();}
-		break;
-		
-		// eMMC
-		case 2:
-		search_max_threshold = 70*0x100000;
-		search_max_threshold_backup = 70*0x100000;
-		search_base_offset = 0x80200000;
-		search_base_offset_min = 0x80200000;
-		search_base_offset_max = search_base_offset_min+0x230000;
-		search_base_offset_adjust=0xA0000;
-		search_base_offset_adjust_jump2=0x20000;
-		search_base_offset_adjust_jump1=0x30000;
-		search_range_size = 0x200000;
-		if(debug_mode){logFoundOffsets();}
-		if(debug_mode){logFlashType();}
-		break;
-		
-		default:
-		break;
-	}
-	
-}
-
-function searchSucceed()
-{
-	document.getElementById('result').innerHTML=msg_success_init;
-	if(debug_mode){logAdd(trigger_msg, log_div);}
-}
-
-function searchFail()
-{
-	total_loops=0;
-	searchResetTimeout();
-	
-	if(allOffsetsFound)
-	{
-		result_msg=msg_string_verify_fail;
-	}
-	else
-	{
-		result_msg=msg_string_search_fail;
-	}
-	
-	//recheckVerifyJump1();
+	if(msg===""){result_msg=msg_exec_init;}else{result_msg=msg;}
 	document.getElementById('result').innerHTML=result_msg;
-	document.getElementById("reload_page").disabled=false;
-	reload_page.focus();
-}
-
-function reloadInitROP()
-{
-	t_out=setTimeout(initROP,1000);
-	resetSearchOffsetMsg();
-}
-
-function resetSearchOffsetMsg()
-{
-	if(allOffsetsFound)
-	{
-		result_msg=msg_verify_offsets;
-	}
-	else
-	{
-		result_msg=msg_search_offsets;
-	}
-	
-	if((allOffsetsFound)&&(offsets_verified))
-	{
-		result_msg=msg_success_init;
-	}
-	else
-	{
-		result_msg=msg_search_offsets;
-	}
-	
-	recheckVerifyJump1();
-	document.getElementById('result').innerHTML=result_msg;
-}
-
-function resetOffsetAddresses()
-{
-	// Reset Addresses
-	usb_fp_addr=0;
-	usb_fp2_addr=0;
-	hdd_fp_addr=0;
-	hdd_fp2_addr=0;
-	path_fp_addr=0;
-	path_fp2_addr=0;
-	path_src_fp_addr=0;
-	path_dest_fp_addr=0;
-	fd_addr=0;
-	fd2_addr=0;
-	file_mode_fp_addr=0;
-	
-	found_offsets=[];
-	if(base_fp_addr!=0){base_offsets.push(base_fp_addr);}else{base_offsets=[];}
-	if(stack_frame_addr!=0){stack_offsets.push(stack_frame_addr);}else{stack_offsets=[];}
-	if(jump_2_addr!=0){jump2_offsets.push(jump_2_addr);}else{jump2_offsets=[];}
-	if(jump_1_addr!=0){jump1_offsets.push(jump_1_addr);}else{jump1_offsets=[];}
-	
-	if(!base_verified){base_fp_addr=0;}
-	if(!stk_verified){stack_frame_addr=0;}
-	if(!j2_verified){jump_2_addr=0;}
-	if(!j1_verified){jump_1_addr=0}
-	
-	/*
-	for(x=0;x<base_offsets.length;x+=1)
-	{
-		if(base_offsets[x]===exploit_addr)
-		{
-			
-		}
-	}
-	*/
-}
-
-function setDefaultPointerValues()
-{
-	usb_fp=0x40404040;
-	usb_fp2=0x41414141;
-	hdd_fp=0x0000001C;
-	hdd_fp2=0x43434343;
-	usb_fd2=0x45454545;
-	hdd_fd=0x46464646;
-	hdd_fd2=0x47474747;
-	fd=0x48484848;
-	fd2=0x49494949;
-	magic=0x4A4A4A4A;
-}
-
-function setCustomPointerValues()
-{
-	// Set bytes to write for db_rebuild and restore_stack for others
-	if(chain_stackframe==="db_rebuild"){write_bytes=db_rebuild_bytes;}else{write_bytes=restore_stack;}
-	
-	// Set values for AutoSize Read/Write Chains
-	if((chain_stackframe==="file_read_write_test")&&(useAutoSize)){hdd_fd=g_set_r3_from_r29;}
-	
-	// Set mount params
-	if(chain_stackframe==="sys_fs_mount"){path_fp=mount_device;path_fp2=mount_fs;path_src_fp=mount_path;}
-}
-
-function setPointerOffsets()
-{
-	file_mode_fp_addr=base_fp_addr+0x2;
-	write_bytes_addr=base_fp_addr+0x4;
-	usb_fp_addr=base_fp_addr+0x8;
-	usb_fp2_addr=base_fp_addr+0xC;
-	hdd_fp_addr=base_fp_addr+0x10;
-	hdd_fp2_addr=base_fp_addr+0x14;
-	usb_fd_addr=base_fp_addr+0x18;
-	usb_fd2_addr=base_fp_addr+0x1C;
-	hdd_fd_addr=base_fp_addr+0x20;
-	hdd_fd2_addr=base_fp_addr+0x24;
-	fd_addr=base_fp_addr+0x28;
-	fd2_addr=base_fp_addr+0x2C;
-	magic_addr=base_fp_addr+0x30;
-	
-	// Path Strings
-	path_fp_addr=base_fp_addr+0x38;
-	path_fp2_addr=path_fp_addr+path_fp.length;
-	
-	path_src_fp_addr=path_fp2_addr+path_fp2.length+0x2;
-	path_dest_fp_addr=path_src_fp_addr+path_src_fp.length+0x2;
-	
-	
-	if(str2u_adjusted)
-	{
-		path_dest_fp_addr=path_src_fp_addr+path_src_fp.length+0x3;
-	}
-	else
-	{
-		path_dest_fp_addr=path_src_fp_addr+path_src_fp.length+0x2;
-	}
-	
-		
-	// Super Hacky Way to fix mount for now :)
-	//if(chain_stackframe==="sys_fs_mount"){path_fp_addr=path_fp_addr-0x2;}
-	//if(chain_stackframe==="sys_fs_mount"){path_fp_addr=path_fp_addr-0x2;path_fp2_addr=path_fp2_addr+0x1;}
-	if(chain_stackframe==="sys_fs_mount"){path_fp_addr=path_fp_addr-0x2;path_fp2_addr=path_fp2_addr+0x1;path_src_fp_addr=path_src_fp_addr+0x2;}
-}
-
-function checkSearchParams()
-{
-	if(search_max_threshold===0){search_max_threshold = search_max_threshold_backup;}// search threshold reset if zero
-	if(search_base_offset<search_base_offset_min){search_base_offset = search_base_offset_min;}// if too low
-	if(search_base_offset>search_base_offset_max){search_base_offset = search_base_offset_min+search_base_offset_adjust;}// if too high
-	if(base_fp_addr===0){search_base_offset = search_base_offset_min;}// reset start offset for search if zero
-}
-
-function searchResetTimeout()
-{
-	if(t_out!=0){clearTimeout(t_out);}
-	//clearTimeout(t_out);
 }
 
 function enableActiveTrigger()
@@ -441,11 +216,6 @@ function verifyStackframeToggle()
 	}
 }
 
-function recheckVerifyJump1()
-{
-	if(jump_1_addr===0){result_msg=msg_search_offsets;}else{result_msg=msg_verify_offsets;}
-}
-
 function disableElement(elem, state)
 {
 	document.getElementById(elem).disabled=state;
@@ -461,11 +231,20 @@ function hideElement(elem, state)
 	if(state)
 	{
 		return document.getElementById(elem).style.visibility='hidden';
-		//return document.getElementById(elem).style.display='none';
 	}
 	else{
 		return document.getElementById(elem).style.visibility='visible';
-		//return document.getElementById(elem).style.display='block';
+	}
+}
+
+function removeElement(elem, state)
+{
+	if(state)
+	{
+		return document.getElementById(elem).style.display='none';
+	}
+	else{
+		return document.getElementById(elem).style.display='block';
 	}
 }
 
@@ -530,6 +309,22 @@ function showMinVersion()
 	}
 }
 
+function showFilesize()
+{
+	if(filesize_seen)
+	{
+		filesize=checkMemory(filesize_addr-0x8+0x28,0x100,0x100,10);
+		filesize=s2hex(filesize).toString().slice(0, 8);
+		alert(msg_filesize+filesize.toString());
+	}
+	else
+	{
+		filesize_seen=true;
+		filesize=msg_filesize_loaded_into_mem;
+		alert(filesize.toString());
+	}
+}
+
 function showTemps()
 {
 	if(temps_both_seen)
@@ -555,56 +350,6 @@ function showTemps()
 		temps_both_seen=true;
 		alert(msg_temps_loaded_into_mem);
 	}
-}
-
-function showFoundOffsetsMsg()
-{
-	document.getElementById('outShowOffsets').innerHTML="<h4><b><font color=%22#"+colortext+"%22>"+msg_found_offsets+"</font><font color=%22#"+base_fp_color+"%22>base_fp: </font>"+"<font color=%22#"+base_fp_acolor+"%22>0x"+base_fp_addr.toString(16).toUpperCase()+"</font><font color=%22#"+stack_frame_color+"%22> | stack_frame_addr: </font>"+"<font color=%22#"+stack_frame_acolor+"%22>0x"+stack_frame_addr.toString(16).toUpperCase()+"</font><font color=%22#"+jump_2_color+"%22> | jump_2_addr: </font>"+"<font color=%22#"+jump_2_acolor+"%22>0x"+jump_2_addr.toString(16).toUpperCase()+"</font><font color=%22#"+jump_1_color+"%22> | jump_1_addr: </font>"+"<font color=%22#"+jump_1_acolor+"%22>0x"+jump_1_addr.toString(16).toUpperCase()+"</b></h4></font>";
-}
-
-function showFoundOffsets(search)
-{
-	if(base_fp_addr<0){base_fp_addr=0;}
-	if(stack_frame_addr<0){stack_frame_addr=0;}
-	if(jump_2_addr<0){jump_2_addr=0;}
-	if(jump_1_addr<0){jump_1_addr=0;}
-	
-	recheckVerifyJump1();
-	
-	base_fp_color=color;
-	stack_frame_color=color;
-	jump_2_color=color;
-	jump_1_color=color;
-	
-	base_fp_acolor=colorActive;
-	stack_frame_acolor=colorActive;
-	jump_2_acolor=colorActive;
-	jump_1_acolor=colorActive;
-	
-	if(base_fp_addr!=0){base_fp_acolor=colorSuccess;}
-	if(base_fp_addr===0){stack_frame_acolor=colorActive;}
-	if(stack_frame_addr!=0){stack_frame_acolor=colorSuccess;}
-	if(jump_2_addr!=0){jump_2_acolor=colorSuccess;}
-	if(jump_1_addr!=0){jump_1_acolor=colorSuccess;}
-	
-	/*
-	if(allOffsetsVerified)
-	{
-		base_fp_acolor=colorVerified;
-		stack_frame_acolor=colorVerified;
-		jump_2_acolor=colorVerified;
-		jump_1_acolor=colorVerified;
-	}
-	else
-	{
-		base_fp_acolor=colorSuccess;
-		stack_frame_acolor=colorSuccess;
-		jump_2_acolor=colorSuccess;
-		jump_1_acolor=colorSuccess;
-	}
-	*/
-	
-	showFoundOffsetsMsg();
 }
 
 // Enable and Disable Stuff
@@ -642,6 +387,7 @@ function toggleDisableButtons(state)
 	disableElement("marked_hex_threads_id", state);
 	
 	disableElement("marked_hex_network", state);
+	disableElement("network_url_edit", state);
 	
 	disableElement("marked_hex_system", state);
 	disableElement("marked_hex_system_led", state);
@@ -653,6 +399,7 @@ function toggleDisableButtons(state)
 	disableElement("mounting_device", state);
 	disableElement("mounting_fs", state);
 	disableElement("mounting_path", state);
+	disableElement("usb_mount_toggle", state);
 	
 	disableElement("marked_reboot", state);
 	disableElement("default_settings", state);
@@ -786,6 +533,28 @@ function syscallAndExit(r3,r4,r5,r6,r7,r8,r9,r10,r11,r30,r31)
 	a5_jumpto=g_exit_chain;
 }
 
+function syscallAndExit8(r3,r4,r5,r6,r7,r8,r9,r10,r11,r30,r31)
+{
+	a1_r3=r3;
+	a1_r4=r4;
+	a1_r5=r5;
+	a1_r6=r6;
+	a1_r7=r7;
+	a1_r8=r8;
+	a1_r9=r9;
+	a1_r10=r10;
+	a1_r11=r11;
+	a1_r29=r29;
+	a1_r30=r30;
+	a1_r31=r31;
+	a1_jumpto=g_set_r4_thru_r11;
+	a2_jumpto=g_set_r3_with_ld;
+	a3_jumpto=g_sc_A0;
+	a4_r11=restore_stack;
+	a4_jumpto=g_set_r4_thru_r11;
+	a5_jumpto=g_exit_chain;
+}
+
 function syscallTwoAndExit(r3a,r4a,r5a,r6a,r7a,r8a,r9a,r10a,r11a,r30a,r31a,r3b,r4b,r5b,r6b,r7b,r8b,r9b,r10b,r11b,r30b,r31b)
 {
 	a1_r3=r3a;
@@ -821,6 +590,54 @@ function syscallTwoAndExit(r3a,r4a,r5a,r6a,r7a,r8a,r9a,r10a,r11a,r30a,r31a,r3b,r
 	a7_r11=restore_stack;
 	a7_jumpto=g_set_r4_thru_r11;
 	a8_jumpto=g_exit_chain;
+}
+
+function syscallThreeAndExit(r3a,r4a,r5a,r6a,r7a,r8a,r9a,r10a,r11a,r30a,r31a,r3b,r4b,r5b,r6b,r7b,r8b,r9b,r10b,r11b,r30b,r31b,r3c,r4c,r5c,r6c,r7c,r8c,r9c,r10c,r11c,r30c,r31c)
+{
+	a1_r3=r3a;
+	a1_r4=r4a;
+	a1_r5=r5a;
+	a1_r6=r6a;
+	a1_r7=r7a;
+	a1_r8=r8a;
+	a1_r9=r9a;
+	a1_r10=r10a;
+	a1_r11=r11a;
+	a1_r30=r30a;
+	a1_r31=r31a;
+	a1_jumpto=g_set_r4_thru_r11;
+	a2_jumpto=g_set_r3_from_r29;
+	a3_jumpto=g_sc_A0;
+	a4_r3=r3b;
+	a4_r4=r4b;
+	a4_r5=r5b;
+	a4_r6=r6b;
+	a4_r7=r7b;
+	a4_r8=r8b;
+	a4_r9=r9b;
+	a4_r10=r10b;
+	a4_r11=r11b;
+	a4_r30=r30b;
+	a4_r31=r31b;
+	a4_jumpto=g_set_r4_thru_r11;
+	a5_jumpto=g_set_r3_from_r29;
+	a6_jumpto=g_sc_A0;
+	a7_r3=r3c;
+	a7_r4=r4c;
+	a7_r5=r5c;
+	a7_r6=r6c;
+	a7_r7=r7c;
+	a7_r8=r8c;
+	a7_r9=r9c;
+	a7_r10=r10c;
+	a7_r11=r11c;
+	a7_r30=r30c;
+	a7_r31=r31c;
+	a7_jumpto=g_set_r4_thru_r11;
+	a8_jumpto=g_set_r3_from_r29;
+	a9_jumpto=g_sc_A0;
+	extra5=restore_stack;
+	a10_jumpto=g_exit_chain;
 }
 
 function syscallAndReboot(r3,r4,r5,r6,r7,r8,r9,r10,r11,r30,r31,mode,lpar_param,lpar_size)
@@ -873,7 +690,7 @@ function syscallFwriteAndExit(r3,r4,r5,r6,r7,r8,r9,r10,r11,r30,r31,dest,size,sta
 	a4_jumpto=g_set_r4_thru_r11;
 	a5_jumpto=g_set_r3_from_r29;
 	a6_r29=size;
-	a6_jumpto=g_fopen_write_close;
+	a6_jumpto=e_fopen_write_close;
 	extra1=size;
 	a7_jumpto=restore_stack;
 	extra2=g_exit_chain;
@@ -889,7 +706,7 @@ function syscallFwriteAndReboot(dest,size,start_addr,mode,lpar_param,lpar_size)
 	a2_jumpto=g_set_r3_from_r29;
 	padding1=pad4ext;// fix for extsw instruction
 	a3_r31=mode;// is r3 but uses r31 place in chain
-	a3_jumpto=g_fopen_write_close;
+	a3_jumpto=e_fopen_write_close;
 	a4_r6=sc_shutdown;// is r11 but uses r6 place in chain
 	a4_r9=0x00000000;// is r4 but uses r9 place in chain
 	a4_r29=size;// size;
@@ -972,24 +789,14 @@ function syscallReadWriteFileAuto(src,dest)
 	a2_jumpto=g_set_r3_from_r29;
 	a3_jumpto=g_sc_A0;
 	
-	file_size_input_addr=sc_sys_fs_stat+0x28;// Size addr will be sys_fs_stat_sb+0x28
+	file_size_input_addr=sys_fs_stat_sb+0x24;// Size addr will be sys_fs_stat_sb+0x28
 	
-	a4_r3=file_size_input_addr;// r29 moving size into r5
-	a4_r4=open_flag_read;
-	a4_r5=0x140;
-	a4_r6=usb_fp_addr;
-	a4_r7=open_mode;
-	a4_r8=0x0;
-	a4_r9=hdd_fd_addr-0x14;// moves into r0
-	a4_r11=sc_sys_fs_open;
+	a4_9=usb_fp_addr;
+	a4_r31=file_size_input_addr;
 	a4_jumpto=g_set_r4_thru_r11;
-	a5_jumpto=g_set_r5_from_r29;
-	a6_jumpto=g_sc_A0;
-	// a7_r3=sc_buzzer_arg1;
-	// a7_r4=sc_buzzer_arg2;
-	// a7_r5=sc_buzzer_arg3;
-	// a7_r11=sc_sys_sm_ring_buzzer;
-	// a7_jumpto=g_set_r4_thru_r11;
+	a5_jumpto=g_set_r6_from_r31;// move size into r6
+	a6_jumpto=g_set_r3_from_r29;
+	a7_jumpto=g_sc_A0;
 	// a8_jumpto=g_set_r3_from_r29;
 	// a9_jumpto=g_sc_A0;
 	// a10_r3=sc_buzzer_arg1;
@@ -1124,7 +931,7 @@ function exportStdcOpenReadCloseDir(src)
 	a1_r31=31;
 	a1_jumpto=g_set_r4_thru_r11;
 	a2_jumpto=g_set_r3_from_r29;
-	a3_jumpto=g_stdc_opendir;
+	a3_jumpto=e_stdc_opendir;
 	a4_r3=3;
 	a4_r4=4;
 	a4_r5=5;
@@ -1205,7 +1012,7 @@ function openReadDeviceAndExit(device_id,src,dest)
 	a6_jumpto=g_set_r4_thru_r11;
 	a7_jumpto=g_set_r3_from_r29;
 	a8_r31=sc_shutdown_soft;
-	a8_jumpto=g_fopen_write_close;
+	a8_jumpto=e_fopen_write_close;
 	a8_r6=sc_shutdown;
 	a8_r29=0x10;
 	a8_r30=temp_addr_8C;
@@ -1247,6 +1054,10 @@ function useCustomStackFrame()
 		syscallAndExit(0x00006011,0x00000001,temp_addr_8C,0,0,0,0,0,update_manager_if,temp_addr_8A,temp_addr_8B);
 		break;
 		
+		case "get_filesize":
+		syscallAndExit(path_src_fp_addr,filesize_addr,0,0,0,0,0,0,sc_sys_fs_stat,temp_addr_8A,temp_addr_8B);
+		break;
+		
 		// uses restore_stack1
 		// thread stopped at 000D7430 48299C99 bl         0x003710C8 
 		// 000D6544 4829AD45 bl         0x00371288
@@ -1260,7 +1071,7 @@ function useCustomStackFrame()
 		// bdp_plugin 000D72C0 482826C9 bl         0x00359988
 		// 000D6644 48008C7D bl         0x000DF2C0
 		case "game_debug_pafjob_test":
-		callExportAndExit(sc_buzzer_arg1,sc_buzzer_arg2,sc_buzzer_no_of_beeps,0,0,0,0,0,sc_sys_sm_ring_buzzer,temp_addr_8A,temp_addr_8B,g_unk_game_debug_pafjob)
+		callExportAndExit(sc_buzzer_arg1,sc_buzzer_arg2,sc_buzzer_no_of_beeps,0,0,0,0,0,sc_sys_sm_ring_buzzer,temp_addr_8A,temp_addr_8B,s_unk_game_debug_pafjob)
 		break;
 		
 		// does not use embedded restore_stack
@@ -1289,6 +1100,10 @@ function useCustomStackFrame()
 		syscallFwriteAndExit(sys_sm_get_platform_info_ptr,0,0,0,0,0,0,0,sc_sys_sm_get_platform_info,temp_addr_8A,temp_addr_8B,path_dest_fp_addr,sys_sm_get_platform_info_size,sys_sm_get_platform_info_ptr);
 		break;
 		
+		case "webkit_search_area":
+		syscallFwriteAndExit(sc_buzzer_arg1,sc_buzzer_arg2,sc_buzzer_arg3,0,0,0,0,0,sc_sys_sm_ring_buzzer,temp_addr_8A,temp_addr_8B,path_dest_fp_addr,0x5FFFFF,0x80100000);
+		break;
+		
 		/*
 		case "dump_idps_from_flash":
 		openReadDeviceAndExit(0x4,path_src_fp_addr,path_dest_fp_addr);
@@ -1299,6 +1114,7 @@ function useCustomStackFrame()
 		if(useAutoSize)
 		{
 			syscallReadWriteFileAuto(path_src_fp_addr,path_dest_fp_addr);
+			//callExportAndExit(path_src_fp_addr,path_dest_fp_addr,temp_addr_8A+0x100,0,0,0,0,0,0,temp_addr_8A,temp_addr_8B,s_cellfs_rw);
 		}
 		else
 		{
@@ -1338,7 +1154,7 @@ function useCustomStackFrame()
 		extra3=g_sc_set_r3_from_r9;
 		extra4=sc_sys_net_close_dump;// register is r11
 		a13_r30=g_set_r31_F8;
-		a16_jumpto=g_fopen_write_close;
+		a16_jumpto=e_fopen_write_close;
 		a15_jumpto=g_sc_set_r3_from_r10;
 		a17_jumpto=g_set_r4_thru_r11;
 		a18_jumpto=g_sc_A0
@@ -1423,17 +1239,61 @@ function useCustomStackFrame()
 		break;
 		
 		case "sys_fs_mount":
-		syscallAndExit(path_fp_addr,path_fp2_addr,path_src_fp_addr,fs_mount_arg4,fs_mount_write_protection,fs_mount_arg6,fs_mount_arg7,fs_mount_arg8,sc_sys_fs_mount,temp_addr_8A,temp_addr_8B);
+		if(usb_mount)
+		{
+			syscallAndExit(path_fp_addr,path_fp2_addr,path_src_fp_addr,fs_mount_arg4,fs_mount_write_protection,fs_mount_arg6,fs_mount_arg7_usbptr,fs_mount_arg8,sc_sys_fs_mount,temp_addr_8A,temp_addr_8B);
+		}
+		else
+		{
+			syscallAndExit(path_fp_addr,path_fp2_addr,path_src_fp_addr,fs_mount_arg4,fs_mount_write_protection,fs_mount_arg6,fs_mount_arg7,fs_mount_arg8,sc_sys_fs_mount,temp_addr_8A,temp_addr_8B);
+		}
+		
 		break;
 		
 		// uses restore_stack1
 		case "sys_fs_unmount":
-		syscallAndExit(mount_path,fs_unmount_arg2,fs_unmount_arg3,0,0,0,0,0,sc_sys_fs_unmount,temp_addr_8A,temp_addr_8B);
+		syscallAndExit(path_fp_addr,fs_unmount_arg2,fs_unmount_arg3,0,0,0,0,0,sc_sys_fs_unmount,temp_addr_8A,temp_addr_8B);
+		break;
+		
+		// uses restore_stack1
+		case "mount_usb_as_bdvd_no_disc":
+		usb_mount=true;
+		syscallTwoAndExit(path_dest_fp_addr,fs_unmount_arg2,fs_unmount_arg3,0,0,0,0,0,sc_sys_fs_unmount,temp_addr_8A,temp_addr_8B,path_fp_addr,path_fp2_addr,path_src_fp_addr,fs_mount_arg4,fs_mount_write_protection,fs_mount_arg6,fs_mount_arg7_usbptr,fs_mount_arg8,sc_sys_fs_mount,temp_addr_8A,temp_addr_8B);
+		break;
+		
+		// uses restore_stack1
+		case "mount_usb_as_bdvd":
+		usb_mount=true;
+		syscallThreeAndExit(path_src_fp_addr,fs_unmount_arg2,fs_unmount_arg3,0,0,0,0,0,sc_sys_fs_unmount,temp_addr_8A,temp_addr_8B,path_dest_fp_addr,fs_unmount_arg2,fs_unmount_arg3,0,0,0,0,0,sc_sys_fs_unmount,temp_addr_8A,temp_addr_8B,path_fp_addr,path_fp2_addr,path_src_fp_addr,fs_mount_arg4,fs_mount_write_protection,fs_mount_arg6,fs_mount_arg7_usbptr,fs_mount_arg8,sc_sys_fs_mount,temp_addr_8A,temp_addr_8B);
+		break;
+		
+		// uses restore_stack1
+		case "mount_other_as_bdvd":
+		if(usb_mount)
+		{
+			syscallThreeAndExit(path_src_fp_addr,fs_unmount_arg2,fs_unmount_arg3,0,0,0,0,0,sc_sys_fs_unmount,temp_addr_8A,temp_addr_8B,path_dest_fp_addr,fs_unmount_arg2,fs_unmount_arg3,0,0,0,0,0,sc_sys_fs_unmount,temp_addr_8A,temp_addr_8B,path_fp_addr,path_fp2_addr,path_src_fp_addr,fs_mount_arg4,fs_mount_write_protection,fs_mount_arg6,fs_mount_arg7_usbptr,fs_mount_arg8,sc_sys_fs_mount,temp_addr_8A,temp_addr_8B);
+		}
+		else
+		{
+			syscallThreeAndExit(path_src_fp_addr,fs_unmount_arg2,fs_unmount_arg3,0,0,0,0,0,sc_sys_fs_unmount,temp_addr_8A,temp_addr_8B,path_dest_fp_addr,fs_unmount_arg2,fs_unmount_arg3,0,0,0,0,0,sc_sys_fs_unmount,temp_addr_8A,temp_addr_8B,path_fp_addr,path_fp2_addr,path_src_fp_addr,fs_mount_arg4,fs_mount_write_protection,fs_mount_arg6,fs_mount_arg7,fs_mount_arg8,sc_sys_fs_mount,temp_addr_8A,temp_addr_8B);
+		}
+		break;
+		
+		// uses restore_stack1
+		case "mount_bdvd_as_ps3_disc":
+		// Disc Allocation 0xD008100F
+		/*
+		Sub 0x6396C4 r3=ptr (-PLAYSTATION3)  r4=ptr (CELL_FS_ISO9660)  r5=ptr (/dev_bdvd)  r6=0 r7=1 r8=0 r9=ptr back to r3 address  r10=ptr back to r4 (CELL_FS_ISO9660)
+		*/
+		// Dex Params (r3-r10): 0x6A63B8,0x6A37C0,0x6A3478,0,1,0,0xD00D5B30,0x6A37C0
+		//callExportAndExit(path_fp_addr,path_fp2_addr,path_src_fp_addr,0,1,0,0,path_fp2_addr,0,temp_addr_8A,temp_addr_8B,s_disc_load_check_type3);
+		callExportAndExit(0x6A63B8,0x6A37C0,0x6A3478,0,1,0,0xD00D5B30,0x6A37C0,0,temp_addr_8A,temp_addr_8B,s_disc_load_check_type3);
 		break;
 		
 		// does not use restore_stack1 restore_stack
 		case "sys_storage_get_device_info":
-		syscallAndExit(storage_get_device_info_device,storage_get_device_info_buffer_ptr,storage_get_device_info_arg3,storage_get_device_info_arg4,0,0,0,0,sc_sys_storage_get_device_info,temp_addr_8A,temp_addr_8B);
+		//syscallAndExit(storage_get_device_info_device,storage_get_device_info_buffer_ptr,storage_get_device_info_arg3,storage_get_device_info_arg4,0,0,0,0,sc_sys_storage_get_device_info,temp_addr_8A,temp_addr_8B);
+		syscallAndExit8(storage_get_device_info_device_nor,storage_get_device_info_buffer_ptr,0,0,0,0,0,0,sc_sys_storage_get_device_info,temp_addr_8A,temp_addr_8B);
 		break;
 		
 		// does not use embedded restore_stack
@@ -1519,7 +1379,7 @@ function useCustomStackFrame()
 		// a4_jumpto=g_set_r4_thru_r11;
 		// a5_jumpto=g_set_r3_from_r29;
 		// a6_r29=0x20;
-		// a6_jumpto=g_fopen_write_close;
+		// a6_jumpto=e_fopen_write_close;
 		// extra1=0x20;
 		// a7_jumpto=restore_stack;
 		// extra2=g_exit_chain;
@@ -1556,7 +1416,7 @@ function useCustomStackFrame()
 		break;
 		
 		case "dump_lv2_syscall_table":
-		syscallFwriteAndExit(sys_ss_utoken_if_packetid,sys_ss_utoken_if_tokenptr,sys_ss_utoken_if_size_lv2,0,0,0,0,0,sc_sys_ss_utoken_if,temp_addr_8A,temp_addr_8B,path_dest_fp_addr,sys_ss_utoken_if_size_lv2,temp_addr_8D);
+		syscallFwriteAndExit(sys_ss_utoken_if_packetid,0,sys_ss_utoken_if_tokenptr,sys_ss_utoken_if_size_lv2,0,0,0,0,sc_sys_ss_utoken_if,temp_addr_8A,temp_addr_8B,path_dest_fp_addr,sys_ss_utoken_if_size_lv2,temp_addr_8D);
 		break;
 		
 		// uses restore_stack1
@@ -1582,6 +1442,44 @@ function useCustomStackFrame()
 		// uses restore_stack1
 		case "sys_net_close_dump":
 		syscallAndExit(sys_net_close_dump_id,sys_net_close_dump_pflags_ptr,0,0,0,0,0,0,sc_sys_net_close_dump,temp_addr_8A,temp_addr_8B);
+		break;
+		
+		case "xmb_plugin_test":
+		callExportAndExit(0,0,0,0,0,0,0,0,0,temp_addr_8A,temp_addr_8B,e_unk_xmb_plugin);
+		break;
+		
+		case "busy_icon_test":
+		callExportAndExit(0,0,0,0,0,0,0,0,0,temp_addr_8A,temp_addr_8B,s_start_busy_icon);
+		break;
+		
+		case "vsh_printf_test":
+		callExportAndExit(path_fp_addr,path_fp2_addr,0,0,0,0,0,0,0,temp_addr_8A,temp_addr_8B,g_printf);
+		break;
+		
+		case "create_new_user":
+		callExportAndExit(0,0,0,0,0,0,0,0,0,temp_addr_8A,temp_addr_8B,s_create_new_user);
+		break;
+		
+		case "test_only":
+		//callExportAndExit(path_fp_addr,path_fp2_addr,0,0,0,0,0,0,0,temp_addr_8A,temp_addr_8B,s_unk_black_screen);
+		//callExportAndExit(path_fp_addr,path_fp2_addr,0,0,0,0,0,0,0,temp_addr_8A,temp_addr_8B,s_unk_thread_exit);
+		//callExportAndExit(0,0,0,0,0,0,0,0,0,temp_addr_8A,temp_addr_8B,s_unk_sys_trace);
+		//callExportAndExit(0,0,0,0,0,0,0,0,0,temp_addr_8A,temp_addr_8B,0x51E6B0);
+		//callExportAndExit(temp_addr_8A,0x80000000,0x200,0,0,0,0,0,0,temp_addr_8B,temp_addr_8C,e_memset);
+		//callExportAndExit(0x68E2C8,0x68E198,0,0,0,0,0,0,0,temp_addr_8B,temp_addr_8C,0x353ADC);
+		//callExportAndExit(2,0,0,0,0,0,0,0,0,temp_addr_8A,temp_addr_8B,s_disc_load_check_type);
+		//callExportAndExit(temp_addr_8A,0,0,0,0,0,0,0,0,temp_addr_8A,temp_addr_8B,s_unk_rsx_device_map);
+		callExportAndExit(temp_addr_8A,0,0,0,0,0,0,0,0,temp_addr_8A,temp_addr_8B,s_unk_uart_init);
+		
+		//syscallAndExit(set_disc_access_control,sys_ss_media_id_arg2_ptr,0,0,0,0,0,0,sc_sys_ss_disc_access_control,temp_addr_8A,temp_addr_8B);
+		//syscallAndExit(sys_ss_get_boot_device_ptr,0,0,0,0,0,0,0,sc_sys_ss_get_boot_device,temp_addr_8A,temp_addr_8B);
+		//syscallAndExit(sys_ss_get_cache_of_product_mode_ptr,0,0,0,0,0,0,0,sc_sys_ss_get_cache_of_product_mode,temp_addr_8A,temp_addr_8B);
+		//syscallAndExit(sys_ss_get_cache_of_flash_ext_flag_ptr,0,0,0,0,0,0,0,sc_sys_ss_get_cache_of_flash_ext_flag,temp_addr_8A,temp_addr_8B);
+		//syscallAndExit(sc_unk_986_ptr,0,0,0,0,0,0,0,sc_unk_986,temp_addr_8A,temp_addr_8B);
+		break;
+		
+		case "test_only2":
+		callExportAndExit(temp_addr_8A,0,0,0,0,0,0,0,0,temp_addr_8A,temp_addr_8B,s_unk_uart_init);
 		break;
 		
 		default:
@@ -1626,11 +1524,18 @@ function setChainOptions(chain)
 		break;
 		
 		case "minver_check":
-		init_rop.focus();
+		setDefaultGuiParams();
+		break;
+		
+		case "get_filesize":
+		setValueToHTML("path_src",path_usb_test_bin);
+		setValueToHTML("path_dest","");
+		init_after_select=true;
+		path_src_type.focus();
 		break;
 		
 		case "game_debug_pafjob_test":
-		init_rop.focus();
+		setDefaultGuiParams();
 		break;
 		
 		case "mem_dump_test":
@@ -1692,15 +1597,11 @@ function setChainOptions(chain)
 		break;
 		
 		case "sys_fs_mapped_allocate":
-		setValueToHTML("path_src","");
-		setValueToHTML("path_dest","");
-		init_rop.focus();
+		setDefaultGuiParams();
 		break;
 		
 		case "sys_fs_mapped_free":
-		setValueToHTML("path_src","");
-		setValueToHTML("path_dest","");
-		init_rop.focus();
+		setDefaultGuiParams();
 		break;
 		
 		case "console_write_test":
@@ -1771,13 +1672,41 @@ function setChainOptions(chain)
 		case "sys_fs_mount":
 		setValueToHTML("path_src","");
 		setValueToHTML("path_dest","");
-		alert(msg_mount_test);
+		//alert(msg_mount_test);
 		mounting_device.focus();
 		break;
 		
 		case "sys_fs_unmount":
 		setValueToHTML("path_src","");
 		setValueToHTML("path_dest","");
+		mounting_path.focus();
+		break;
+		
+		case "mount_usb_as_bdvd_no_disc":
+		setValueToHTML("path_src","");
+		setValueToHTML("path_dest","");
+		alert(msg_mount_no_disc);
+		init_rop.focus();
+		break;
+		
+		case "mount_usb_as_bdvd":
+		setValueToHTML("path_src","");
+		setValueToHTML("path_dest","");
+		alert(msg_mount_yes_disc);
+		init_rop.focus();
+		break;
+		
+		case "mount_other_as_bdvd":
+		setValueToHTML("path_src","");
+		setValueToHTML("path_dest","");
+		alert(msg_mount_test);
+		mounting_path.focus();
+		break;
+		
+		case "mount_bdvd_as_ps3_disc":
+		setValueToHTML("path_src","");
+		setValueToHTML("path_dest","");
+		alert(msg_mount_ps3_disc);
 		init_rop.focus();
 		break;
 		
@@ -1838,12 +1767,18 @@ function setChainOptions(chain)
 		init_rop.focus();
 		break;
 		
-		case "sys_storage_open":
+		case "webkit_search_area":
+		setValueToHTML("path_src","");
+		setValueToHTML("path_dest",webkit_search_area_dump);
+		init_rop.focus();
+		break;
 		
+		case "sys_storage_open":
+		setDefaultGuiParams();
 		break;
 		
 		case "sys_storage_read":
-		
+		setDefaultGuiParams();
 		break;
 		
 		case "sys_process_exit":
@@ -1901,9 +1836,7 @@ function setChainOptions(chain)
 		break;
 		
 		case "sys_sm_request_led":
-		setValueToHTML("path_src","");
-		setValueToHTML("path_dest","");
-		init_rop.focus();
+		setDefaultGuiParams();
 		break;
 		
 		case "sys_sm_control_led":
@@ -1913,15 +1846,11 @@ function setChainOptions(chain)
 		break;
 		
 		case "sys_game_get_temperature":
-		setValueToHTML("path_src","");
-		setValueToHTML("path_dest","");
-		init_rop.focus();
+		setDefaultGuiParams();
 		break;
 		
 		case "sys_sm_get_fan_policy":
-		setValueToHTML("path_src","");
-		setValueToHTML("path_dest","");
-		init_rop.focus();
+		setDefaultGuiParams();
 		break;
 		
 		/*
@@ -1934,39 +1863,27 @@ function setChainOptions(chain)
 		*/
 		
 		case "sys_ss_utoken_if":
-		setValueToHTML("path_src","");
-		setValueToHTML("path_dest","");
-		init_rop.focus();
+		setDefaultGuiParams();
 		break;
 		
 		case "sys_rsx_memory_free":
-		setValueToHTML("path_src","");
-		setValueToHTML("path_dest","");
-		init_rop.focus();
+		setDefaultGuiParams();
 		break;
 		
 		case "sys_net_open_dump":
-		setValueToHTML("path_src","");
-		setValueToHTML("path_dest","");
-		init_rop.focus();
+		setDefaultGuiParams();
 		break;
 		
 		case "sys_net_read_dump":
-		setValueToHTML("path_src","");
-		setValueToHTML("path_dest","");
-		init_rop.focus();
+		setDefaultGuiParams();
 		break;
 		
 		case "sys_net_write_dump":
-		setValueToHTML("path_src","");
-		setValueToHTML("path_dest","");
-		init_rop.focus();
+		setDefaultGuiParams();
 		break;
 		
 		case "sys_net_close_dump":
-		setValueToHTML("path_src","");
-		setValueToHTML("path_dest","");
-		init_rop.focus();
+		setDefaultGuiParams();
 		break;
 		
 		case "dump_lv2_syscall_table":
@@ -1974,10 +1891,46 @@ function setChainOptions(chain)
 		setValueToHTML("path_dest",sys_ss_utoken_lv2_sc_table_dump);
 		init_rop.focus();
 		break;
+		
+		case "xmb_plugin_test":
+		alert("DEX 4.81 ONLY");
+		setDefaultGuiParams();
+		break;
+		
+		case "busy_icon_test":
+		alert("DEX 4.81 ONLY");
+		setDefaultGuiParams();
+		break;
+		
+		case "vsh_printf_test":
+		alert("DEX 4.81 ONLY");
+		setValueToHTML("path_src",vsh_printf_arg1);
+		setValueToHTML("path_dest",vsh_printf_arg2);
+		init_rop.focus();
+		break;
+		
+		case "create_new_user":
+		alert("DEX 4.81 ONLY");
+		setDefaultGuiParams();
+		break;
+		
+		case "test_only":
+		alert("DEX 4.81 ONLY");
+		setValueToHTML("path_src",vsh_printf_arg1);
+		setValueToHTML("path_dest",vsh_printf_arg2);
+		init_rop.focus();
+		break;
 	}
 	
 }
 
+
+// Default GUI Params
+function setDefaultGuiParams(){
+	setValueToHTML("path_src","");
+	setValueToHTML("path_dest","");
+	init_rop.focus();
+} 
 
 // Set Mounting Device
 function mountSetDevice(device){
@@ -1994,7 +1947,8 @@ function mountSetFS(fs){
 // Set Mounting File System
 function mountSetPath(path){
 	mount_path = path.value;
-	write_protection_toggle.focus();
+	if(chain_stackframe==="sys_fs_mount"){write_protection_toggle.focus();}
+	if(chain_stackframe==="sys_fs_unmount"){init_rop.focus();}
 } 
 
 // Get Process ID
@@ -2021,6 +1975,22 @@ function toggleWriteProtect(){
 	{
 		fs_mount_write_protection=0x00000001;
 		write_protect=true;
+	}
+	
+	init_rop.focus();
+} 
+
+// Toggle USB Mounting R9 Pointer Arg
+function toggleUsbMount(){
+	if(usb_mount)
+	{
+		usb_mount=false;
+		alert(msg_mount_usb_disable);
+	}
+	else
+	{
+		usb_mount=true;
+		alert(msg_mount_usb_enable);
 	}
 	
 	init_rop.focus();
@@ -2074,7 +2044,6 @@ function setNumberOfBeeps(beeps){
 } 
 
 // Chain Selector
-var chain_stackframe="";
 function chainSelection(hex){
 	chain_stackframe = hex.value;
 	
@@ -2199,6 +2168,8 @@ function setPathNameSrc(path){
 		setValueToHTML("file_size_edit",file_size_display);
 		if (confirm(msg_anti_piracy_edat)){setValueToHTML("path_src",x);}else{reloadPage();}
 	}
+	
+	if(init_after_select){init_after_select=false;init_rop.focus();}
 } 
 
 function setPathNameDest(path){
@@ -2218,6 +2189,8 @@ function setPathNameDest(path){
 		setValueToHTML("file_size_edit",file_size_display);
 		if (confirm(msg_anti_piracy_edat)){setValueToHTML("path_dest",x);}else{reloadPage();}
 	}
+	
+	if(init_after_select){init_after_select=false;init_rop.focus();}
 } 
 
 function setUserID(path){
@@ -2586,7 +2559,7 @@ function setPayloadMedia(marked_xmb_select)
 		disableElement("copy_payload_media_photo",true);
 		disableElement("copy_payload_media_music",false);
 		disableElement("copy_payload_media_video",true);
-		//return str2u(media_dest);
+		//return media_dest.convert();
 		alert(msg_media_not_supported);
 		break;
 		
@@ -2600,7 +2573,7 @@ function setPayloadMedia(marked_xmb_select)
 		disableElement("copy_payload_media_photo",false);
 		disableElement("copy_payload_media_music",true);
 		disableElement("copy_payload_media_video",true);
-		//return str2u(media_dest);
+		//return media_dest.convert();
 		break;
 		
 		case "video":
@@ -2613,7 +2586,7 @@ function setPayloadMedia(marked_xmb_select)
 		disableElement("copy_payload_media_photo",true);
 		disableElement("copy_payload_media_music",true);
 		disableElement("copy_payload_media_video",false);
-		//return str2u(media_dest);
+		//return media_dest.convert();
 		alert(msg_media_not_supported);
 		break;
 		
@@ -2653,7 +2626,16 @@ function execSuccessMessage(chain)
 			reload_page.focus();
 			break;
 			
+			case "webkit_search_area":
+			msg_success_text=success_chain_exec_memdump;
+			reload_page.focus();
+			break;
+			
 			case "minver_check":
+			msg_success_text=success_chain_exec_press_again;
+			break;
+			
+			case "get_filesize":
 			msg_success_text=success_chain_exec_press_again;
 			break;
 			
@@ -2699,6 +2681,10 @@ function postExecTasks(chain)
 		setTimeout(showMinVersion(),2000);
 		break;
 		
+		case "get_filesize":
+		setTimeout(showFilesize(),2000);
+		break;
+		
 		case "sys_game_get_temperature":
 		setTimeout(showTemps(),2000);
 		break;
@@ -2734,7 +2720,7 @@ function showAllDebugOutput()
 	var sample="sampleX";
 	
     //alert("Page X of X"+"\n"+"sample: "+sample+"\n"+"sample: "+sample+"\n"+"sample: "+sample+"\n"+"sample: "+sample+"\n"+"sample: "+sample+"\n");
-    alert("Page 1 of X"+"\n"+"flash_type_text: "+flash_type_text+"\n"+"chain_stackframe: "+chain_stackframe+"\n"+"str2u_adjusted: "+str2u_adjusted);
+    alert("Page 1 of X"+"\n"+"flash_type_text: "+flash_type_text+"\n"+"chain_stackframe: "+chain_stackframe);
     alert("Page 2 of X"+"\n"+"max_loops: "+max_loops+"\n"+"failCount: "+failCount+"\n"+"failCountMax: "+failCountMax+"\n"+"search_max_threshold: "+search_max_threshold.toString(16)+"\n"+"search_max_threshold_backup: "+search_max_threshold_backup.toString(16)+"\n");
     alert("Page 3 of X"+"\n"+"search_base_offset: "+search_base_offset.toString(16)+"\n"+"search_base_offset_min: "+search_base_offset_min.toString(16)+"\n"+"search_base_offset_max: "+search_base_offset_max.toString(16)+"\n"+"search_base_offset_adjust: "+search_base_offset_adjust.toString(16)+"\n"+"search_base_offset_adjust_jump2: "+search_base_offset_adjust_jump2+"\n");
     alert("Page 4 of X"+"\n"+"search_base_offset_adjust_jump1: "+search_base_offset_adjust_jump1.toString(16)+"\n"+"search_range_size: "+search_range_size.toString(16));
